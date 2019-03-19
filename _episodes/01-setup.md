@@ -1,5 +1,5 @@
 ---
-title: Setting Up Git
+title: Getting started with Git
 teaching: 5
 exercises: 0
 questions:
