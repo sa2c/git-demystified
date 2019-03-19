@@ -1,6 +1,6 @@
 ---
 title: "Debugging with git"
-teaching: 0
+teaching: 30
 exercises: 0
 questions:
 - How can I use git to track down problems in code?

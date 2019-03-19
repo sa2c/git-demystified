@@ -1,6 +1,6 @@
 ---
 title: "Commits and Branching"
-teaching: 0
+teaching: 45
 exercises: 0
 questions:
 - How do commits work and how do I create branches?

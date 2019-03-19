@@ -1,7 +1,7 @@
 ---
 title: "Reset and checkout"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 20
 questions:
 - What are the differences between reset and checkout and when should I use them?
 objectives:
