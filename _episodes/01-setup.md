@@ -7,8 +7,10 @@ questions:
 objectives:
 - "Configure `git` the first time it is used on a computer."
 - "Understand the meaning of the `--global` configuration flag."
+- "Set up github.com to use ssh keys"
 keypoints:
 -   "Use `git config` with the `--global` option to configure a user name, email address, editor, and other preferences once per machine."
+-   "Set up ssh keys to connect to github.com"
 ---
 
 When we use Git on a new computer for the first time,
@@ -169,3 +171,30 @@ cat ~/.ssh/id_rsa.pub
 Copy the output of this command into the *Key* field and hit the "Add SSH Key" button to submit.
 
 ![ssh-keys-github-form.png](../fig/ssh-keys-github-form.png)
+
+You should be able to connect to github.com now. We can verify this with
+~~~
+ssh -T git@github.com
+~~~
+You may see one of the following warnings:
+~~~
+> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
+  > RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+  > Are you sure you want to continue connecting (yes/no)?
+~~~
+or
+~~~
+> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
+  > RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+  > Are you sure you want to continue connecting (yes/no)?
+~~~
+Verify that the message you see matches one of the ones above. If it does, continue by typing
+~~~
+yes
+~~~
+and hitting enter. You should then see a message which says
+~~~
+> Hi <username>! You've successfully authenticated, but GitHub does not
+> provide shell access.
+~~~
+The placeholder \<username\> in this text should contain your github username. If it does, then the setup is correct and we're good to go! If you get anything else, check your setup or ask a helper to look over your setup with you before proceeding.
