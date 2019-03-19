@@ -3,7 +3,7 @@ title: "Commits and Branching"
 teaching: 0
 exercises: 0
 questions:
-- Open questions
+- How do commits work and how do I create branches?
 objectives:
 - "Gentle reminder of basic git usage"
 - "Understanding of how git handles changes"
@@ -265,28 +265,92 @@ or we could choose only their changes, discarding all of ours
 git checkout --theirs -- README.mdown
 ~~~
 This is equivalent to copying the files from the tip of each branch. This is often useful with binary files or files not created by humans (e.g. XML config files or data files).
-## Git magic explained
-So what is a commit, and how does it all work? Git is based on the idea of creating unique (or almost unique) 40 character "fingerprints" for everything it knows about. You've probably seen these everywhere. Git has three types of object: commits, trees and blobs.
+## Is it just magic?
+Git seems to do a lot for us, and some people thing it works in mysterious ways. The aim of this short section is to give some insight into the magic that git does for us.
 
+What is a commit, and how does it all work? Git is based on the idea of creating unique (or almost unique) 40 character "fingerprints" for everything (or almost everything) that it knows about. You've probably seen these everywhere. Git has three types of object referenced by these IDs: commits, trees and blobs.
+
+### Blobs
 Blobs are just the word git uses for the content of a file without its name. If two files contained the exact same content, they would both point to the same blob with a different filename. Let's take a look at a blob
 ~~~
 git cat-file -p aded
 ~~~
 This is *everything* that git knows about the blob
-d570b2c26081ff4794e72fa3dd2cc38062df9910. It doesn't have a filename anywhere.
+d570b2c26081ff4794e72fa3dd2cc38062df9910. This is the output
+~~~
+Authors are (ordered by first commit date):
 
+- Vincent Driessen
+- Benedikt Böhm
+- Daniel Truemper
+- Jason L. Shiffer
+- Randy Merrill
+- Rick Osborne
+- Mark Derricutt
+- Nowell Strite
+- Felipe Talavera
+- Guillaume-Jean Herbiet
+- Joseph A. Levin
+- Jannis Leidel
+- Konstantin Tjuterev
+- Kiall Mac Innes
+- Jon Bernard
+- Olivier Mengué
+- Emre Berge Ergenekon
+- Eric Holmes
+- Vedang Manerikar
+- Myke Hines
+
+Portions derived from other open source works are clearly marked.
+~~~
+This is simply the content of the file AUTHORS. But notice, the blob is just the content, doesn't seem to know anything about the filename. It's just a nameless blob of information.
+
+### Trees
 A tree is a list of file names and an ID of their content. Git uses trees to refer to directories. Let's take a look at a tree.
 ~~~
 git cat-file -p d570
 ~~~
-Note how the AUTHORS commit in this tree is the fingerprint of the blob - so git knows where to go for content. If the file is renamed, git only changes the name in the tree, the blob stays the same.
+We see the information in a tree object
+~~~
+100644 blob 8d038485fc10058d4e078954e17eb262f8263cfe    .gitignore
+100644 blob 85665678e4acc7a6961bc989073a217e8f0e815b    .gitmodules
+100644 blob aded955fca44f9199b340667048f7a4f7504e4e6    AUTHORS
+100644 blob 2281f2307d8123fc13f157953b3c69dd935aaaee    Changes.mdown
+100644 blob cedd1823140299f7862bf84afa0f217e2b1ac9e7    LICENSE
+100644 blob fbbfd2c00016b174c351addde78985f7064ddb3d    Makefile
+100644 blob a01079b4baae9ea3af2c9e05ead57f2667f0460c    README.mdown
+100755 blob f7494c9b82d892323d951156d863c39f8b7cd47d    bump-version
+040000 tree b5369782e23c81adbcabbf388504690d9217d7ba    contrib
+100755 blob fd16d5168d671b8f9a8a8a6a140d3f7b5dacdccd    git-flow
+100644 blob 55198ad82cbfe7249951aa75f1373a476997d33a    git-flow-feature
+100644 blob ba485f6fe4b7d9c35bc01d2a6bd4ae201bccc9bd    git-flow-hotfix
+100644 blob 5b4e7e807423279d5983c28b16307e40dfdb51d7    git-flow-init
+100644 blob cb95bd486deb7089939362705d78b2197893f578    git-flow-release
+100644 blob cdbfc717c0f1eb9e653a4d10d7c4df261ed40eab    git-flow-support
+100644 blob 8c314996c0ac31f1396c48af5c6511124002dab7    git-flow-version
+100644 blob 33274053347f4eec2f27dd8bceca967b89ae02d5    gitflow-common
+120000 blob 7b736c183c7f6400b20ea613183d74a55ead78b5    gitflow-shFlags
+160000 commit 2fb06af13de884e9680f14a00c82e52a67c867f1  shFlags
+~~~
+Note how the AUTHORS entry in the tree has the same fingerprint as the blob previously. Trees are how git connects blobs to their file names. If the file is renamed, git only changes the name in the tree, the blob stays the same.
 
+Note also how the tree contains another tree object, called `contrib`. This is how git managed folder and sub-folders.
+
+### Commit
 A commit is a bunch of information about a commit, connected to a tree. Let's look at everything git knows about a commit
 ~~~
 git cat-file -p 15aab
 ~~~
+Finally we can understand what a commit actually contains.
+~~~
+tree d570b2c26081ff4794e72fa3dd2cc38062df9910
+parent 5bca8d9358f5b08af40ac32f289bb14b18965cec
+author Jerome Baum <jerome@jeromebaum.com> 1348580812 +0200
+committer Jerome Baum <jerome@jeromebaum.com> 1348580812 +0200
 
-Notice that the tree here is the tree we saw a second ago. It also contains a lot of other information. If any of this information changes, the commit ID (or fingerprint) will also change. All of this should to be exactly identical for an identical commit ID.
+Use git_do where appropriate
+~~~
+Notice that the tree here is the tree we saw a second ago. It also contains some other metadata. If any of this information changes, the commit ID (or fingerprint) will also change. All of this should to be exactly identical for an identical commit ID.
 
 Importantly, a commit only knows about its parents, not its children. This makes sense. We didn't know the children of a commit when we created it, and if we added this information later, it would changing the commit ID or fingerprint.
 

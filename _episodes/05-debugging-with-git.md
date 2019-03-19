@@ -3,7 +3,7 @@ title: "Debugging with git"
 teaching: 0
 exercises: 0
 questions:
-- Open questions
+- How can I use git to track down problems in code?
 objectives:
 - ""
 keypoints:

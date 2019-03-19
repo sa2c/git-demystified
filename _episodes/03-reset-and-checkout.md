@@ -3,7 +3,7 @@ title: "Reset and checkout"
 teaching: 0
 exercises: 0
 questions:
-- Open questions
+- What are the differences between reset and checkout and when should I use them?
 objectives:
 - "Be able to manipulate the content of the worktree, staging area and commit"
 - "Be able to change the last in a branch"
