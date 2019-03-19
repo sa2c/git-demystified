@@ -1,30 +1,35 @@
 ---
-title: "Debugging with git"
+title: "Identifying breaking commits"
 teaching: 30
 exercises: 0
 questions:
 - How can I use git to track down problems in code?
 objectives:
-- ""
+- "Learn to identify when and in what commit problems were introduced"
 keypoints:
-- ""
+- "Learnt to use git blame to identify when a problem line was introduced"
+- "Learnt to use binary searches to identify lines which first introduce a problem"
 ---
 {% include links.md %}
 
-# Downloading some code
-First we need to grab a same repository, let's change to our home directory
+# Lesson setup
+First we need to pull down some code from a remote repository, let's change to our Desktop
 ~~~
-git clone git@github.com:sa2c/example-hello-world.git ~/example-hello-world
+cd ~/Desktop
 ~~~
-and change into that repository
+and clone the code
 ~~~
-cd ~/example-hello-world
+git clone git@github.com:sa2c/example-hello-world.git
+~~~
+and change into the fresh repository
+~~~
+cd example-hello-world
 ~~~
 Let's take a look at the contents of this repository
 ~~~
 ls
 ~~~
-We see a single file, let's have a look inside it.
+We see a small number of file, let's have a look inside it.
 ~~~
 nano hello.sh
 ~~~
@@ -34,38 +39,50 @@ Since this is an example, most of the file does nothing. Only one line does any 
 ~~~
 This clearly has a problem, as expect. Let's look at the log history to see if we can spot it.
 ~~~
-
 git log --oneline
 ~~~
-We can see instantly a commit that might be causing the issue, the commit labelled "Changed echo to echom". In reality however, finding the problem wouldn't be this simple. In general, we might not know what file the problem is in, or where in that file. We may have hundreds of files with hundreds of lines each, and no idea where to start looking. Let's start by looking at the inital commit
+If we looked at this for a while, can could probably spot the commit that might be causing the issue, the commit labelled "Changed echo to echom". In reality however, finding the problem wouldn't be this simple. In general, we might not know what file the problem is in, or where in that file. We may have hundreds of files with hundreds of lines each, and no idea where to start looking. Let's start by looking at the inital commit
 ~~~
-git checkout 8750
+git checkout 1153
 ~~~
 And see if the hello.sh script runs here.
 ~~~
 ./hello.sh
 ~~~
-That's good news. The file runs with no problems in the initial commit, somewhere between the two commits something went wrong. In this section, we will explore ways in which we can investiagte the sources of errors.
+That's good news. The file runs with no problems in the initial commit, somewhere between the two commits something went wrong. In this section, we will explore ways in which we can investigate the sources of errors.
+Let's move back to the tip of the master branch.
+~~~
+git checkout master
+~~~
 
 # Git blame
 
-The first thing we might want to do is to look at the commit where a line was last modified. Let's try this with
+If we know where the problem is in the file, we might ask ourselves what introduced this problem. What commit introduced this line. Let's try this with
 ~~~
 git blame hello.sh
 ~~~
-We see that most lines were created in the same commit, but some were modified later. Let's look more closely at one of those commits, the one where the line containing echom was changed.
+We see that most lines were created in the same commit, but some were modified in other commits. There are a lot of lines here, let's focus on the range 30 to 50
 ~~~
-git show b83
+git blame -L 30,50 hello.sh
+~~~
+That's better. Let's take a closer look at the commit on line 45.
+~~~
+git show da86
+~~~
+That's interesting. We can see that the problematic line was in fact copied from another file at this commit. This can make git blame a little less useful, we would like to know the commit in which this set of lines originally appeared in any file. Fortunately, we can ask git blame to attempt to track movement between files
+~~~
+git blame -C -L 30,50 hello.sh
 ~~~
 This commit did indeed add this line to the file. Another useful thing to do is to restrict the output of git blame to a specific sequence of lines. Let's say we're interested in lines 30 to 44, can run
-~~~
-git blame -L 30,44 hello.sh
-~~~
 Often we copy content between files in git, and something that might have started life in another commit, may only have been copied in the specified commit but might have been initially written in another commit and another file. We can get the original source of each line with the -C option, like this
 ~~~
 git blame -C -L 30,44 hello.sh
 ~~~
-Git blame is a very useful tool if you know the line that causes the issues in the first place, but you want to look at the commit message of that generated the line to check where it came from.
+Git blame is a very useful tool if you know the line that causes the issues in the first place, but you want to look at the commit message of that generated the line to check where it came from. Now we can see the lines were actually introduced in another commit, let's take a loko at that commit now
+~~~
+git show 8f67
+~~~
+
 
 # Binary searching with git
 We could checkout each commit one at a time, and check each one, but this is very time consuming. We'd have to check out each commit one at a time, like this
@@ -88,7 +105,7 @@ git bisect bad HEAD
 ~~~
 Then we can mark the initial commit as good
 ~~~
-git bisect good 8750
+git bisect good 1153
 ~~~
 Git will now drop us at a commit half way between the good and the bad commits, we can verify this with
 ~~~
@@ -132,7 +149,7 @@ git log --oneline master
 ~~~
 Git has marked the relevant commits as bad, but it hasn't moved us to the first bad commit. It left us in this pending state. Let's take a look at the content of the breaking commit
 ~~~
-git show 05c0
+git show da86
 ~~~
 Git is telling us that the problem was introduced by a change that happened on line 39 of hello.sh where echo was changed to echom. For us, this was probably a problem that is easy enough to resolve without using bisect, but for a large complex code base when we don't know where to start, bisect can instantly point us to the change which first caused the problem. Let's exit the bisect state and go back to master with
 ~~~
@@ -165,4 +182,7 @@ Git does all the boring work for us. Every time it runs the command we gave and 
 ~~~
 git bisect reset
 ~~~
-This is a very powerful debugging tool, but it relies on all your code being in a runnable state, such that I can automatically identify. It works best when used with a branching and merging strategy, to ensure there are no breaking commits on the master branch.
+
+>## One caveat
+> This is a very powerful debugging tool, but it relies on all your code being in a runnable state, such that I can automatically identify. It works best when used with a branching and merging strategy, to ensure there are no breaking commits on the master branch.
+{: .callout}
