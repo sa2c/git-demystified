@@ -118,13 +118,13 @@ $ git show 8f67
 ## Binary searching with git
 We could checkout each commit one at a time, and check each one, but this is very time consuming. We'd have to check out each commit one at a time, like this
 ~~~
-# git checkout HEAD~7
-# git checkout HEAD~6
-# git checkout HEAD~5
+$ git checkout HEAD~7
+$ git checkout HEAD~6
+$ git checkout HEAD~5
 ...
-# git checkout HEAD~3
-# git checkout HEAD~2
-# git checkout HEAD~1
+$ git checkout HEAD~3
+$ git checkout HEAD~2
+$ git checkout HEAD~1
 ~~~
 {: .language-bash}
 We can do better than this if we choose a half way point between the
