@@ -16,7 +16,7 @@ keypoints:
 {% include links.md %}
 
 We've already seen some examples of the git checkout. In this section we'll explore the checkout command further, and see how they work in practice.
-# Reset
+## Reset
 ~~~
 $ git clone git@github.com:sa2c/example-blacksheep.git ~/example-blacksheep
 ~~~
@@ -58,7 +58,7 @@ $ git log -p
 {: .language-bash}
 This command would likely be too much information for all but a simple repository, but in this case it's exactly what we need.
 
-# Reset soft
+## Reset soft
 Let's say that we decide after creating the commits that this is too granular. We created the last three commits independently when we were writing the file, but actually, since they're on the same line, it now makes sense to us to group them logically into a single commit. Let's do this with the reset command
 ~~~
 $ git reset --soft HEAD~3
@@ -121,7 +121,7 @@ $ git log -p
 >
 {: .challenge}
 
-# Reset HEAD and the staging area
+## Reset HEAD and the staging area
 What happens when we leave out the `--soft` option? The default in that case is to perform a "mixed" reset. Let's see how this works:
 ~~~
 $ git reset HEAD~2
@@ -179,7 +179,7 @@ $ git reset
 {: .language-bash}
 to undo the addition to the staging area. Not that not specifying a commit will use HEAD by default. What happens to the second file? What happens to the working directory files?
 
-# Reset everything : treat with care
+## Reset everything : treat with care
 The final type of reset we can do is called a "hard" reset. Hard is the "next level up" from mixed. Let's first move our repository back to the way it was before with a mixed reset
 ~~~
 $ git reset origin/master
@@ -280,7 +280,7 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 
 Note that if you don't tell reset where to take files from, the files are taken from HEAD by default.
 What happens if you make some modification to `README.mdown`, add these changes to the staging area with
-# Commit-level Checkout
+## Commit-level Checkout
 git reset --hard origin/master
 We'll add some content to the file README.txt.
 ~~~
@@ -338,7 +338,7 @@ have been changing would also have been changed by the checkout. This
 is much safer than using a `git reset --hard`, as it preserves our 
 work and prevents us from losing current changes.
 
-## Checkout without `-q`
+### Checkout without `-q`
 The `-q` we've seen in the previous section stands for "quiet"; it tells git that we're not interested in hearing about any problems. This normallly *isn't* the behaviour we would like. Let's see what happens with the same checkout commands without the `-q` option.
 
 First we move back to master
@@ -374,7 +374,7 @@ Now we can see that we get a long warning message about a detached HEAD. This me
 >{: .solution}
 >
 {: .challenge}
-# Checkout of only specific files
+## Checkout of only specific files
 Both the checkout and reset commands can take files as arguments, in this case they behave quite differently. Let's reset our repository to the way it is on the remote server
 ~~~
 $ git reset --hard origin/master
@@ -516,7 +516,7 @@ Note, only the mixed (default) version of reset makes sense with files. Changing
 >{: .solution}
 >
 {: .challenge}
-# The Reference Log
+## The Reference Log
 Let's change directory back to the gitflow repository from earlier
 ~~~
 $ cd ~/example-gitflow
@@ -590,7 +590,7 @@ $ git show master@{2.hours.ago}
 ~~~
 {: .language-bash}
 
-# Referring to Commits
+## Referring to Commits
 We've seen a bunch of different type of arguments passed to commands such as git checkout. For example, references to HEAD
 ~~~
 $ git log -1 HEAD
