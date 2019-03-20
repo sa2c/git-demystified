@@ -64,41 +64,41 @@ Add your name to the end of the list. We check that git has seen the change
 $ git status
 ~~~
 {: .language-bash}
- The status command tells us that the AUTHORS file has been modified, but not added to the repository. It can be helpful to think of git as manipulating three sets of files, the working directory, the staging area and the current commit (known as HEAD). Asking git for its status simply compares these three sets of files, and highlights the differences to us. If we always think of git as copying files between these three areas, what it does will seem much less mysterious.
- ~~~
+The status command tells us that the AUTHORS file has been modified, but not added to the repository. It can be helpful to think of git as manipulating three sets of files, the working directory, the staging area and the current commit (known as HEAD). Asking git for its status simply compares these three sets of files, and highlights the differences to us. If we always think of git as copying files between these three areas, what it does will seem much less mysterious.
+~~~
 $ git add AUTHORS
- ~~~
+~~~
 {: .language-bash}
- We can think of this action as copying the file README.mdown into the staging area. The staging area is a set of files that we think of as the "next proposed commit".
+We can think of this action as copying the file README.mdown into the staging area. The staging area is a set of files that we think of as the "next proposed commit".
 
- Let's  the state of our repository, with
- ~~~
+Let's  the state of our repository, with
+~~~
 $ git status
- ~~~
+~~~
 {: .language-bash}
- We now see the file under "Changes to be committed", which tells us that it's different between the staging area and the current commit. But it is not under "Changes not staged for commit", so it is the same between the working directory and the staging area.
- Lets make some further changes to the working directory files, by deleting the line we added to the top of the README.mdown file.
- Looking at the status now
- ~~~
+We now see the file under "Changes to be committed", which tells us that it's different between the staging area and the current commit. But it is not under "Changes not staged for commit", so it is the same between the working directory and the staging area.
+Lets make some further changes to the working directory files, by deleting the line we added to the top of the README.mdown file.
+Looking at the status now
+~~~
 $ git status
- ~~~
+~~~
 {: .language-bash}
- shows us the file both under "Changes to be committed" as well as "Changes not staged for commit", indicating that the file is different in all three areas. We can create a commit from the changes as they are in the staging are, by typing:
- ~~~
+shows us the file both under "Changes to be committed" as well as "Changes not staged for commit", indicating that the file is different in all three areas. We can create a commit from the changes as they are in the staging are, by typing:
+~~~
 $  git commit -m 'Added to the AUTHORS list'
- ~~~
- {: .language-bash}
- We have now created a new current commit, by copying the files as they were in the staging area. We therefore expect that the files in the staging area and the current commit are the same. Running git status will verify this:
- ~~~
-$ git status
- ~~~
+~~~
 {: .language-bash}
- We see the same differences between the working directory and staging areas as before, but no differences between staging area and the current commit. This makes sense, since one was just created from the other.
+We have now created a new current commit, by copying the files as they were in the staging area. We therefore expect that the files in the staging area and the current commit are the same. Running git status will verify this:
+~~~
+$ git status
+~~~
+{: .language-bash}
+We see the same differences between the working directory and staging areas as before, but no differences between staging area and the current commit. This makes sense, since one was just created from the other.
 
- Let's try and do this all again, but this time, imagine that we're starting a long running feature, which might have many commits and might break the state of the repository whilst we're doing it. Let's imagine that we're changing the documentation, to make it more friendly and informative.
+Let's try and do this all again, but this time, imagine that we're starting a long running feature, which might have many commits and might break the state of the repository whilst we're doing it. Let's imagine that we're changing the documentation, to make it more friendly and informative.
 
 We add a sentence to the end of the introductory section
- ~~~
+~~~
 git-flow
 ========
 
@@ -140,51 +140,51 @@ $ git branch -v
 ~~~
 {: .language-bash}
 Now, when we commit, our commits get added to the branch update-docs, without changing the master branch. Let's add our changes, but let's divide it into two commits
- ~~~
+~~~
 $ git add -p README.mdown
- ~~~
+~~~
 {: .language-bash}
- This looks confusing. Let's hit the <kbd>?</kbd> key to review out options. We choose video content related changes with <kbd>y</kbd> and reject all other changes with <kbd>n</kbd>. Now that we have crafted a commit, let's see what git status says.
- ~~~
+This looks confusing. Let's hit the <kbd>?</kbd> key to review out options. We choose video content related changes with <kbd>y</kbd> and reject all other changes with <kbd>n</kbd>. Now that we have crafted a commit, let's see what git status says.
+~~~
 $ git status
- ~~~
+~~~
 {: .language-bash}
- We now see the file both under "Changes to be committed" and under "Changes not staged for commit", so like before the file is different in all of the three areas. In the working directory it has all of our changes, in the staging area it has the changes we selected with `git add -p`, and in the current commit it has no changes at all (yet).
+We now see the file both under "Changes to be committed" and under "Changes not staged for commit", so like before the file is different in all of the three areas. In the working directory it has all of our changes, in the staging area it has the changes we selected with `git add -p`, and in the current commit it has no changes at all (yet).
 Note, git hasn't chosen parts of the file or checked changes into the staging area. It just created for us a version of the file with only some of the changes, the file in the staging area may never have existed with the exact same contents in the working directory.
 Let's see how the files in the staging look compared to the latest commit.
- ~~~
+~~~
 $ git diff --staged
- ~~~
+~~~
 {: .language-bash}
 And how the working directory looks compared to the staging area
- ~~~
+~~~
 $ git diff
- ~~~
+~~~
 {: .language-bash}
 We're happy, so we can commit
- ~~~
+~~~
 $ git commit -m 'Expanded on the introduction'
- ~~~
+~~~
 {: .language-bash}
- Let's check what differences are left with
- ~~~
+Let's check what differences are left with
+~~~
 $ git status
- ~~~
+~~~
 {: .language-bash}
- and
- ~~~
+and
+~~~
 $ git diff
- ~~~
+~~~
 {: .language-bash}
- Once we're happy that this can all go into one commit, we'll add it and commit, using
- ~~~
+Once we're happy that this can all go into one commit, we'll add it and commit, using
+~~~
 $ git add README.mdown
- ~~~
+~~~
 {: .language-bash}
- and
- ~~~
+and
+~~~
 $ git commit -m 'Changed wording to be more inclusive'
- ~~~
+~~~
 {: .language-bash}
 Let's have a look at our history as it is currently with
 ~~~
