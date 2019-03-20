@@ -194,7 +194,7 @@ $ git log --after="2014-7-1" --before="2014-7-4"
 ~~~
 {: .language-bash}
 
-># Alternatives
+> ## Alternatives
 > Note that the `--since` and `--until` flags are synonymous with `--after` and `--before`, respectively.
 {: .callout}
 
