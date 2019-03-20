@@ -179,7 +179,7 @@ $ git reset
 {: .language-bash}
 to undo the addition to the staging area. Not that not specifying a commit will use HEAD by default. What happens to the second file? What happens to the working directory files?
 
-## Reset everything : treat with care
+## Reset everything: treat with care
 The final type of reset we can do is called a "hard" reset. Hard is the "next level up" from mixed. Let's first move our repository back to the way it was before with a mixed reset
 ~~~
 $ git reset origin/master
