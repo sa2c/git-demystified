@@ -36,12 +36,12 @@ could possibly need.
 
 ## Formatting Log Output
 
-First, let's take a look at the many ways in which git log’s output
+First, let's take a look at the many ways in which `git log`’s output
 can be formatted. Most of these come in the form of flags that let you
 request more or less information from `git log`.
 
-If you don’t like the default `git log` format, you can use git
-config’s aliasing functionality to create a shortcut for any of the
+If you don’t like the default `git log` format, you can use `git
+config`’s aliasing functionality to create a shortcut for any of the
 formatting options discussed below. Please see in The git config
 Command for how to set up an alias.
 
