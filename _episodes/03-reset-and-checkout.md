@@ -9,7 +9,9 @@ objectives:
 - "Be able to change the last in a branch"
 - "Be able to move to historical states of the repository"
 keypoints:
-- ""
+- "Learnt to change the state of the index, working tree using git reset"
+- "Learnt to change the commit which this branch points to with git reset"
+- "Learnt to selectively pick up historical versions of files with git checkout"
 ---
 {% include links.md %}
 

@@ -81,7 +81,7 @@ git status
  git status
  ~~~
  We see the same differences between the working directory and staging areas as before, but no differences between staging area and the current commit. This makes sense, since one was just created from the other.
- # do all of this in term of the three trees...! Call them "three collections of files"
+
  Let's try and do this all again, but this time, imagine that we're starting a long running feature, which might have many commits and might break the state of the repository whilst we're doing it. Let's imagine that we're changing the documentation, to make it more friendly and informative.
 
 We add a sentence to the end of the introductory section
@@ -113,6 +113,14 @@ We can see all our branches with
 ~~~
 git branch -v
 ~~~
+Notice, we're still on the master branch. We need to move over to the update-docs branch
+~~~
+git checkout update-docs
+~~~
+And we can check the branches again, with
+~~~
+git branch -v
+~~~
 Now, when we commit, our commits get added to the branch update-docs, without changing the master branch. Let's add our changes, but let's divide it into two commits
  ~~~
  git add -p README.mdown
@@ -123,6 +131,15 @@ Now, when we commit, our commits get added to the branch update-docs, without ch
  ~~~
  We now see the file both under "Changes to be committed" and under "Changes not staged for commit", so like before the file is different in all of the three areas. In the working directory it has all of our changes, in the staging area it has the changes we selected with git add -p, and in the current commit it has no changes at all (yet).
 Note, git hasn't chosen parts of the file or checked changes into the staging area. It just created for us a version of the file with only some of the changes, the file in the staging area may never have existed with the exact same contents in the working directory.
+Let's see how the files in the staging look compared to the latest commit.
+ ~~~
+ git diff --staged
+ ~~~
+And how the working directory looks compared to the staging area
+ ~~~
+ git diff
+ ~~~
+ We're happy, so we can commit
  ~~~
  git commit -m 'Expanded on the introduction'
  ~~~
@@ -154,7 +171,7 @@ We verify we're on another branch with
 ~~~
 git branch -v
 ~~~
-we should see an asterix next to master, to indicate it's the current branch. We can further verify the state of the repo with.
+we should see an asterisk next to master, to indicate it's the current branch. We can further verify the state of the repo with.
 ~~~
 git log --oneline --graph --all
 ~~~
@@ -166,9 +183,10 @@ Let's see what this command has done
 ~~~
 git diff
 ~~~
-You should see only changes to README.mdown. We want to add this and create a commit, we can add all files to the staging area and commit at the same time with
+You should see only changes to README.mdown. We want to add this and create a commit, we can add the files to the staging area and commit with
 ~~~
-git commit --all -m 'Fixed URLS in README.mdown'
+git add README.mdown
+git commit -m 'Fixed URLS in README.mdown'
 ~~~
 Let's have a look at our changes now, we use
 ~~~
@@ -200,15 +218,16 @@ git status
 ~~~
 Next we want to add the file and commit it in this branch, we can add all files and commit in a single step with
 ~~~
-git commit --all -m 'Added git-party script'
+git add git-party
+git commit -m 'Added git-party script'
 ~~~
 We can check that the last commit contains what we thought it did by looking at it with
 ~~~
-git show git-party
+git show git-party --
 ~~~
 This shows the commit that git-party points to. We can use a branch name here because branches are only handy human-readable names that we assign to commits. Let's have a look at our branches
 ~~~
-git log --graph --oneline --all
+git log --graph --oneline --all -10
 ~~~
 We can see we're currently in the party branch. Next, we want to merge all of our changes back to master. First we change onto the master branch,
 ~~~
