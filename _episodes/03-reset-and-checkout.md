@@ -270,8 +270,9 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 >
 > What happens if we do a hard reset, but leave out the place to copy files from, like this
 > ~~~
-> git reset --hard
+> $ git reset --hard
 > ~~~
+> {: .language-bash}
 >
 >Can you work out where the files come from
 >Hint: it may help to make some changes to the files in the current directory first.
