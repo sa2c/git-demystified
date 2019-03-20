@@ -69,29 +69,6 @@ ad8621a Fix a bug in the feature
 {: .output}
 This is very useful for getting a high-level overview of your project.
 
-### Decorating
-
-Many times it’s useful to know which branch or tag each commit is
-associated with. The `--decorate` flag makes `git log` display all of
-the references (e.g., branches, tags, etc) that point to each commit.
-
-This can be combined with other configuration options. For example, running
-~~~
-$ git log --oneline --decorate
-~~~
-{: .language-bash}
-will format the commit history like so:
-~~~
-0e25143 (HEAD, master) Merge branch 'feature'
-ad8621a (feature) Fix a bug in the feature
-16b36c6 Add a new feature
-23ad9ad (tag: v0.9) Add the initial code base
-~~~
-{: .output}
-This lets you know that the top commit is also checked out (denoted by HEAD) and that it is also the tip of the master branch. The second commit has another branch pointing to it called feature, and finally the 4th commit is tagged as v0.9.
-
-Branches, tags, HEAD, and the commit history are almost all of the information contained in your Git repository, so this gives you a more complete view of the logical structure of your repository.
-
 ### Diffs
 
 The `git log` command includes many options for displaying diffs with
