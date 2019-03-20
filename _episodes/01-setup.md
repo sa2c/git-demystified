@@ -150,12 +150,16 @@ same commands to choose another editor or update your email address.
 # Setting up SSH keys
 In the lesson today we will use SSH keys for fast easy access to github.com. First we need to generate an SSH key for the machine we're using, with
 ~~~
-ssh-keygen
+$ ssh-keygen
 ~~~
+{: .language-bash}
 We can press enter to accept the default location. You may choose a passphrase to protect your keys, or you can leave this empty.
 
->## Warning: overwritting keys
->If you already have a key, ssh-keygen will warn you that it is about to overwrite a file. If this happens, press n and then ENTER to confirm that you *don't* want to overwrite the file. You may skip this step.
+>## Warning: overwriting keys
+>If you already have a key, `ssh-keygen` will warn you that it is
+>about to overwrite a file. If this happens, press `n` and then ENTER
+>to confirm that you *don't* want to overwrite the file. You can skip
+>on to the next step.
 {: .keypoints}
 
 Next we want to add this key on github.com. To do this, visit the
@@ -166,35 +170,40 @@ page, and hit the "New Key" button. You should see the following menu box:
 
 Enter a meaningful description of the machine your using that will make sense to future you, such as "Work Laptop". In the *Key* field, we should enter the public RSA key. We can get this key by typing at the command line
 ~~~
-cat ~/.ssh/id_rsa.pub
+$ cat ~/.ssh/id_rsa.pub
 ~~~
+{: .language-bash}
 Copy the output of this command into the *Key* field and hit the "Add SSH Key" button to submit.
 
 ![ssh-keys-github-form.png](../fig/ssh-keys-github-form.png)
 
 You should be able to connect to github.com now. We can verify this with
 ~~~
-ssh -T git@github.com
+$ ssh -T git@github.com
 ~~~
+{: .language-bash}
 You may see one of the following warnings:
 ~~~
-> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
-  > RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
-  > Are you sure you want to continue connecting (yes/no)?
+The authenticity of host 'github.com (IP ADDRESS)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)?
 ~~~
+{: .output}
 or
 ~~~
-> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
-  > RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
-  > Are you sure you want to continue connecting (yes/no)?
+The authenticity of host 'github.com (IP ADDRESS)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)?
 ~~~
+{: .output}
 Verify that the message you see matches one of the ones above. If it does, continue by typing
 ~~~
 yes
 ~~~
 and hitting enter. You should then see a message which says
 ~~~
-> Hi <username>! You've successfully authenticated, but GitHub does not
-> provide shell access.
+Hi <username>! You've successfully authenticated, but GitHub does not
+provide shell access.
 ~~~
+{: .output}
 The placeholder \<username\> in this text should contain your github username. If it does, then the setup is correct and we're good to go! If you get anything else, check your setup or ask a helper to look over your setup with you before proceeding.
