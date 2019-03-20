@@ -16,6 +16,11 @@ keypoints:
 - "We've learnt to watch out for submodules, and initialise them"
 ---
 {% include links.md %}
+Let's grab a repository from the web to start working with
+~~~
+git clone git@github.com:sa2c/example-gitflow-modified.git
+~~~
+# Git log
 
 The purpose of any version control system is to record changes to your
 code. This gives you the power to go back into your project history to
