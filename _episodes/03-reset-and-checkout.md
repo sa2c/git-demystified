@@ -154,20 +154,23 @@ It appears that the changes from the last two commits indeed waiting to be stage
 >> $ git add <file>
 >> ~~~
 >> {: .language-bash}
->>then reset the files with
+>> then reset the files with
 >> ~~~
 >> $ git reset <file>
 >> ~~~
 >> {: .language-bash}
->>or
->>~~~
->> git reset HEAD <file>
->>~~
->>or
->>~~~
+>> or
+>> ~~~
+>> $ git reset HEAD <file>
+>> ~~~
+>> {: .language-bash}
+>> or
+>> ~~~
 >> git reset HEAD -- <file>
->>~~
->>Note how if we leave out HEAD, then git will assume we want to pull from the HEAD reference by default.
+>> ~~~
+>> {: .language-bash}
+>> Note how if we leave out HEAD, then git will assume we want to pull
+>> from the HEAD reference by default.
 >{: .solution}
 >
 {: .challenge}
