@@ -327,6 +327,6 @@ from your project history.
 These new skills are an important part of your Git toolkit, but
 remember that `git log` is often used in conjunction other Git
 commands. Once you’ve found the commit you’re looking for, you
-typically pass it off to git checkout, git revert, or some other tool
-for manipulating your commit history. So, be sure to keep on learning
-about Git’s advanced features.
+typically pass it off to `git checkout`, `git revert`, or some other
+tool for manipulating your commit history. So, be sure to keep on
+learning about Git’s advanced features.
