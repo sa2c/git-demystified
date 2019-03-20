@@ -165,8 +165,9 @@ You can limit `git log`’s output by including the `-<n>` option. For
 example, the following command will display only the 3 most recent
 commits.
 ~~~
-git log -3
+$ git log -3
 ~~~
+{: .language-bash}
 
 ### By Date
 
