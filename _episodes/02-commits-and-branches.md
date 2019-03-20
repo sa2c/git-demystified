@@ -1,5 +1,5 @@
 ---
-title: "Commits and Branching"
+title: "Committing and Branching"
 teaching: 45
 exercises: 0
 questions:
