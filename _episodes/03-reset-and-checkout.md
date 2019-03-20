@@ -278,10 +278,7 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 >
 {: .challenge}
 
-Note that if you don't tell reset where to take files from, the files are taken from HEAD by default.
-What happens if you make some modification to `README.mdown`, add these changes to the staging area with
 ## Commit-level Checkout
-git reset --hard origin/master
 We'll add some content to the file README.txt.
 ~~~
 A sample repository containing the nursery rhyme "Baa, baa, black sheep"
