@@ -24,9 +24,15 @@ revert problematic changes. But, having all of this history available
 is useless if you don’t know how to navigate it. That’s where the `git
 log` command comes in.
 
-By now, you should already know the basic git log command for displaying commits. But, you can alter this output by passing many different parameters to git log.
+We've already encountered the `git log` command for displaying
+commits. But, we can alter this output by passing many different
+parameters to `git log`.
 
-The advanced features of git log can be split into two categories: formatting how each commit is displayed, and filtering which commits are included in the output. Together, these two skills give you the power to go back into your project and find any information that you could possibly need.
+The advanced features of `git log` can be split into two categories:
+formatting how each commit is displayed, and filtering which commits
+are included in the output. Together, these two skills give us the
+power to go back into your project and find any information that you
+could possibly need.
 
 ## Formatting Log Output
 
