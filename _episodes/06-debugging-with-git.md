@@ -91,19 +91,6 @@ blame` to attempt to track movement between files
 $ git blame -C -L 30,50 hello.sh
 ~~~
 {: .language-bash}
-This commit did indeed add this line to the file. Another useful thing
-to do is to restrict the output of `git blame` to a specific sequence
-of lines. Let's say we're interested in lines 30 to 44, can run
-
-Often we copy content between files in git, and something that might
-have started life in another commit, may only have been copied in the
-specified commit but might have been initially written in another
-commit and another file. We can get the original source of each line
-with the `-C` option, like this
-~~~
-$ git blame -C -L 30,44 hello.sh
-~~~
-{: .language-bash}
 `git blame` is a very useful tool if you know the line that causes the
 issues in the first place, but you want to look at the commit message
 of that generated the line to check where it came from. Now we can see
