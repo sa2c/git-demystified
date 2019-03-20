@@ -282,7 +282,7 @@ $ git log master..feature
 The `master..feature` range contains all of the commits that are in
 the feature branch, but aren’t in the master branch. In other words,
 this is how far feature has progressed since it forked off of
-master. You can visualize this as follows:
+master.
 
 ## Detecting a fork in the history using ranges
 
