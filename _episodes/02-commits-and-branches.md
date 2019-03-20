@@ -49,7 +49,9 @@ git@github.com: Permission denied (publickey).
 fatal: Could not read from remote repository.
 ~~~
 {: .output}
-then there is an issue with your ssh setup. You should go back and check it again or ask a helper to check if with you. Once you've cloned the respository, change into that directory with
+then there is an issue with your ssh setup. Take another look at the
+previous episode, or ask a helper to check if with you. Once you've
+cloned the respository, change into that directory with
 ~~~
 $ cd example-gitflow
 ~~~
