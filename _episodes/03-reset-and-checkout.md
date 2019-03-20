@@ -17,36 +17,36 @@ keypoints:
 
 We've already seen some examples of the git checkout. In this section we'll explore the checkout command further, and see how they work in practice.
 # Reset
- ~~~
- git clone git@github.com:sa2c/example-blacksheep.git ~/example-blacksheep
- ~~~
- This is a very simple repository, let's see what it does. We change into this directory
- ~~~
- cd ~/example-blacksheep
- ~~~
- Let's take a look at the files
- ~~~
- cat blacksheep.txt
- ~~~
- This contains a few lines from the well-known nursery rhyme.
+~~~
+git clone git@github.com:sa2c/example-blacksheep.git ~/example-blacksheep
+~~~
+This is a very simple repository, let's see what it does. We change into this directory
+~~~
+cd ~/example-blacksheep
+~~~
+Let's take a look at the files
+~~~
+cat blacksheep.txt
+~~~
+This contains a few lines from the well-known nursery rhyme.
 
- What about the others?
- ~~~
- cat README.txt
- ~~~
- This contains some simple README text. It is usually a good idea to have one of these in your repository. And the final file:
- ~~~
- cat commit-number.txt
- ~~~
- This contain a number, this is an incrementing number for each commit. Let's look at the commit history:
- ~~~
- git log --oneline
- ~~~
- Seems like we've added parts of the famous nursery rhyme "Baa, baa, black sheep". Since this is a very simple repostitory, let's take a look at the contents of every commit, we can do this with by asking log for patches
- ~~~
- git log -p
- ~~~
- This command would likely be too much information for all but a simple repository, but in this case it's exactly what we need.
+What about the others?
+~~~
+cat README.txt
+~~~
+This contains some simple README text. It is usually a good idea to have one of these in your repository. And the final file:
+~~~
+cat commit-number.txt
+~~~
+This contain a number, this is an incrementing number for each commit. Let's look at the commit history:
+~~~
+git log --oneline
+~~~
+Seems like we've added parts of the famous nursery rhyme "Baa, baa, black sheep". Since this is a very simple repostitory, let's take a look at the contents of every commit, we can do this with by asking log for patches
+~~~
+git log -p
+~~~
+This command would likely be too much information for all but a simple repository, but in this case it's exactly what we need.
 
 # Reset soft
 Let's say that we decide after creating the commits that this is too granular. We created the last three commits independently when we were writing the file, but actually, since they're on the same line, it now makes sense to us to group them logically into a single commit. Let's do this with the reset command
@@ -72,7 +72,7 @@ git log -p
 ~~~
 There are now only two commits, and each one adds a complete line to the file. Note that we created a whole new commit. The old commits are still there if we want them, we can change the repository back to the way it was before by resetting the current branch to the commit which we first downloaded. Let's do that now:
 ~~~
- git reset --soft origin/master
+git reset --soft origin/master
 ~~~
 And let's check the repository again, with
 ~~~
@@ -102,9 +102,9 @@ git log -p
 {: .challenge}
 
 # Reset HEAD and the staging area
- What happens when we leave out the --soft option? The default in that case is to perform a "mixed" reset. Let's see how this works:
+What happens when we leave out the --soft option? The default in that case is to perform a "mixed" reset. Let's see how this works:
 ~~~
- git reset HEAD~2
+git reset HEAD~2
 ~~~
 Let's see what this has done
 ~~~
@@ -155,7 +155,7 @@ to undo the addition to the staging area. Not that not specifying a commit will 
 # Reset everything : treat with care
 The final type of reset we can do is called a "hard" reset. Hard is the "next level up" from mixed. Let's first move our repository back to the way it was before with a mixed reset
 ~~~
- git reset origin/master
+git reset origin/master
 ~~~
 We'll check that this is the case.
 ~~~
@@ -241,54 +241,54 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 Note that if you don't tell reset where to take files from, the files are taken from HEAD by default.
 What happens if you make some modification to README.mdown, add these changes to the staging area with
 # Commit-level Checkout
- git reset --hard origin/master
- We'll add some content to the file README.txt.
- ~~~
- A sample repository containing the nursery rhyme "Baa, baa, black sheep"
- Let's make some changes to the README.txt in our working directory.
- ~~~
- Let's now grab the changes as they where three commits ago, maybe we want to have a look at that version of the repository because we know it was working.
- ~~~
- git checkout -q HEAD~3
- ~~~
- Git hasn't complained about the changes in the working directory, what has it done with them?
- ~~~
- git status
- ~~~
- There are some changes to README.txt, let's see what they are
- ~~~
- git diff
- ~~~
- Git has checkout out the files as they were three commits ago, but has left the changes in our local repository, because these changes were made to another file. Let's verify that the contents of the repository has in fact changed
- ~~~
- cat blacksheep.txt
- ~~~
- and the log
- ~~~
- git log -2 --oneline origin/master
- ~~~
- We can see that the current commit, HEAD, has been moved back by three commits, but that master (and origin/master) are in the same place. This is useful if we want to move around and look around, without changing the branches themselves. We can go back to where we were with
- ~~~
- git checkout master
- ~~~
- Let's get rid of our changes, and this time make changes to blacksheep.txt
- ~~~
- git reset --hard
- ~~~
- And we edit the file to look like this
- ~~~
- Baa, baa, black sheep, have you any wool?
- Yes, sir, yes, sir, three bags full!
- One for me and one for you
- ~~~
- And we run the exact same checkout command again
- ~~~
- git checkout -q HEAD~3
- ~~~
- This time, git has refused to do the checkout, because the file we have been changing would also have been changed by the checkout. This is much safer than using a reset --hard, as it preserves our work and prevents us from losing current changes.
+git reset --hard origin/master
+We'll add some content to the file README.txt.
+~~~
+A sample repository containing the nursery rhyme "Baa, baa, black sheep"
+Let's make some changes to the README.txt in our working directory.
+~~~
+Let's now grab the changes as they where three commits ago, maybe we want to have a look at that version of the repository because we know it was working.
+~~~
+git checkout -q HEAD~3
+~~~
+Git hasn't complained about the changes in the working directory, what has it done with them?
+~~~
+git status
+~~~
+There are some changes to README.txt, let's see what they are
+~~~
+git diff
+~~~
+Git has checkout out the files as they were three commits ago, but has left the changes in our local repository, because these changes were made to another file. Let's verify that the contents of the repository has in fact changed
+~~~
+cat blacksheep.txt
+~~~
+and the log
+~~~
+git log -2 --oneline origin/master
+~~~
+We can see that the current commit, HEAD, has been moved back by three commits, but that master (and origin/master) are in the same place. This is useful if we want to move around and look around, without changing the branches themselves. We can go back to where we were with
+~~~
+git checkout master
+~~~
+Let's get rid of our changes, and this time make changes to blacksheep.txt
+~~~
+git reset --hard
+~~~
+And we edit the file to look like this
+~~~
+Baa, baa, black sheep, have you any wool?
+Yes, sir, yes, sir, three bags full!
+One for me and one for you
+~~~
+And we run the exact same checkout command again
+~~~
+git checkout -q HEAD~3
+~~~
+This time, git has refused to do the checkout, because the file we have been changing would also have been changed by the checkout. This is much safer than using a reset --hard, as it preserves our work and prevents us from losing current changes.
 
 ## Checkout without -q
- The -q we've seen in the previous section stands for "quiet", it tells git that we're not interested in hearing about any problems. This normallly *isn't* the behaviour we would like. Let's see what happens with the same checkout commands without the -q option.
+The -q we've seen in the previous section stands for "quiet", it tells git that we're not interested in hearing about any problems. This normallly *isn't* the behaviour we would like. Let's see what happens with the same checkout commands without the -q option.
 
 First we move back to master
 ~~~
@@ -320,69 +320,69 @@ Now we can see that we get a long warning message about a detached HEAD. This me
 >
 {: .challenge}
 # Checkout of only specific files
- Both the checkout and reset commands can take files as arguments, in this case they behave quite differently. Let's reset our repository to the way it is on the remote server
- ~~~
- git reset --hard origin/master
- ~~~
- Let us take a look at the content of the commit-number.txt
- ~~~
- cat commit-number.txt
- ~~~
- Now, let's perform a checkout, this time specifying the commit-number.txt file.
- ~~~
- git checkout HEAD~3 -- commit-number.txt
- ~~~
- We check what has happened with
- ~~~
- git log --oneline origin/master
- ~~~
- We see that we're still on the same commit, HEAD hasn't moved this time. It doesn't make sense to move HEAD for some files and keep it in the same place for others, that would get confusing very quickly. Only the file copy operations have been performed. Let's see what effect this has had.
- ~~~
- git status
- ~~~
- The file commit-number.txt has been copied from the previous commit HEAD~3 into both our working directory as well and into the staging area. We can verify the changes with
- ~~~
- git diff --staged
- ~~~
- The file commit-number.txt has changed and nothing else has. In this case git checkout with a file behaves very much like we would expect git reset --hard to behave with files. It overrides the file in the staging area and working directory and resets any changes. For this reason
- ~~~
- git reset --hard HEAD~3 -- commit-number.txt
- ~~~
- This is not a valid command, since it would perform the same operation as the git checkout command. Using git reset however does allow us to copy specific files to and from the index, leaving the working directory unchanged.
- Let's reset our repository to the way it was at the beginning of this lesson
- ~~~
- git reset --hard origin/master
- ~~~
- Let's make some changes to README.txt
- ~~~
- A sample repository containing the nursery rhyme "Baa, baa, black sheep".
- This repository is used to demonstrate reset and checkout for git.
- ~~~
- and copy them to the staging area.
- ~~~
- git add README.txt
- ~~~
- We can use git reset to copy the version in the repository back, effectively undoing the add. First we check the status of the file we changed
- ~~~
- git status
- ~~~
- Now we can unstage the file with
- ~~~
- git reset HEAD -- README.txt
- ~~~
- If we leave out the specification of the commit, HEAD in this case, git will default to HEAD. Let's add the file again
- ~~~
- git add README.txt
- ~~~
- and check the status
- ~~~
- git status
- ~~~
- Now we reset, or unstage, the file with
- ~~~
- git reset README.txt
- ~~~
- Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. --soft) doesn't make sense with files, and --hard is equivalent ot checkout.
+Both the checkout and reset commands can take files as arguments, in this case they behave quite differently. Let's reset our repository to the way it is on the remote server
+~~~
+git reset --hard origin/master
+~~~
+Let us take a look at the content of the commit-number.txt
+~~~
+cat commit-number.txt
+~~~
+Now, let's perform a checkout, this time specifying the commit-number.txt file.
+~~~
+git checkout HEAD~3 -- commit-number.txt
+~~~
+We check what has happened with
+~~~
+git log --oneline origin/master
+~~~
+We see that we're still on the same commit, HEAD hasn't moved this time. It doesn't make sense to move HEAD for some files and keep it in the same place for others, that would get confusing very quickly. Only the file copy operations have been performed. Let's see what effect this has had.
+~~~
+git status
+~~~
+The file commit-number.txt has been copied from the previous commit HEAD~3 into both our working directory as well and into the staging area. We can verify the changes with
+~~~
+git diff --staged
+~~~
+The file commit-number.txt has changed and nothing else has. In this case git checkout with a file behaves very much like we would expect git reset --hard to behave with files. It overrides the file in the staging area and working directory and resets any changes. For this reason
+~~~
+git reset --hard HEAD~3 -- commit-number.txt
+~~~
+This is not a valid command, since it would perform the same operation as the git checkout command. Using git reset however does allow us to copy specific files to and from the index, leaving the working directory unchanged.
+Let's reset our repository to the way it was at the beginning of this lesson
+~~~
+git reset --hard origin/master
+~~~
+Let's make some changes to README.txt
+~~~
+A sample repository containing the nursery rhyme "Baa, baa, black sheep".
+This repository is used to demonstrate reset and checkout for git.
+~~~
+and copy them to the staging area.
+~~~
+git add README.txt
+~~~
+We can use git reset to copy the version in the repository back, effectively undoing the add. First we check the status of the file we changed
+~~~
+git status
+~~~
+Now we can unstage the file with
+~~~
+git reset HEAD -- README.txt
+~~~
+If we leave out the specification of the commit, HEAD in this case, git will default to HEAD. Let's add the file again
+~~~
+git add README.txt
+~~~
+and check the status
+~~~
+git status
+~~~
+Now we reset, or unstage, the file with
+~~~
+git reset README.txt
+~~~
+Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. --soft) doesn't make sense with files, and --hard is equivalent ot checkout.
 
 >## The dangers of checkout
 >
@@ -441,99 +441,99 @@ Now we can see that we get a long warning message about a detached HEAD. This me
 >
 {: .challenge}
 # The Reference Log
- Let's change directory back to the gitflow repository from earlier
- ~~~
- cd ~/example-gitflow
- ~~~
- Let's check we're on the master branch, with
- ~~~
- git checkout master
- ~~~
- And we'll create a file in our repository
- ~~~
- touch this-file-will-be-lost.txt
- ~~~
- And add it
- ~~~
- git add this-file-will-be-lost.txt
- ~~~
- Bit we won't commit it, let's check the state of the repository
- ~~~
- git status
- ~~~
- And let's take a look at the history
- ~~~
- git log --oneline --graph -10
- ~~~
- OK, I don't like this, I'm going to delete it all and go back to the way it was before we started this morning.
- ~~~
- git reset --hard origin/master
- ~~~
- Bam! We appear to have lost all the hard work we put in this morning. Is there a way to get it back? The branch master has changed, so it's no good looking at that. Remember, a commit doesn't know its children, so it's no good starting from the current commit to look for later commits. Let's use the following command
- ~~~
- git log -g
- ~~~
- This looks just like the output of git log, but in fact shows all the actions which have changed the reference HEAD (i.e. the current commit). If we wanted all the actions which have changed the branch master, we could run
- ~~~
- git log -g master
- ~~~
- Once we identify the commit we want, we can refer to it either with the commit ID or with its position in the appropriate reflog. Let's take a look at the commit before we move to it
- ~~~
- git show HEAD@{5}
- ~~~
- That looks like the commit we want, let's reset the current branch to that point
- git reset --hard HEAD@{1}
- This means "go back to the state HEAD was in one moves ago". We could also have used a reference such as master@{1} here, if we wanted the master branch.
- We can verify that the current branch has changed in the way we wanted with
- ~~~
- git log --oneline --graph --all
- ~~~
+Let's change directory back to the gitflow repository from earlier
+~~~
+cd ~/example-gitflow
+~~~
+Let's check we're on the master branch, with
+~~~
+git checkout master
+~~~
+And we'll create a file in our repository
+~~~
+touch this-file-will-be-lost.txt
+~~~
+And add it
+~~~
+git add this-file-will-be-lost.txt
+~~~
+Bit we won't commit it, let's check the state of the repository
+~~~
+git status
+~~~
+And let's take a look at the history
+~~~
+git log --oneline --graph -10
+~~~
+OK, I don't like this, I'm going to delete it all and go back to the way it was before we started this morning.
+~~~
+git reset --hard origin/master
+~~~
+Bam! We appear to have lost all the hard work we put in this morning. Is there a way to get it back? The branch master has changed, so it's no good looking at that. Remember, a commit doesn't know its children, so it's no good starting from the current commit to look for later commits. Let's use the following command
+~~~
+git log -g
+~~~
+This looks just like the output of git log, but in fact shows all the actions which have changed the reference HEAD (i.e. the current commit). If we wanted all the actions which have changed the branch master, we could run
+~~~
+git log -g master
+~~~
+Once we identify the commit we want, we can refer to it either with the commit ID or with its position in the appropriate reflog. Let's take a look at the commit before we move to it
+~~~
+git show HEAD@{5}
+~~~
+That looks like the commit we want, let's reset the current branch to that point
+git reset --hard HEAD@{1}
+This means "go back to the state HEAD was in one moves ago". We could also have used a reference such as master@{1} here, if we wanted the master branch.
+We can verify that the current branch has changed in the way we wanted with
+~~~
+git log --oneline --graph --all
+~~~
 
- We can also use references anywhere we would normally use a commit, for example
- ~~~
- git log master@{yesterday}
- ~~~
- or
- ~~~
- git show master@{2.hours.ago}
- ~~~
+We can also use references anywhere we would normally use a commit, for example
+~~~
+git log master@{yesterday}
+~~~
+or
+~~~
+git show master@{2.hours.ago}
+~~~
 
 # Referring to Commits
- We've seen a bunch of different type of arguments passed to commands such as git checkout. For example, references to HEAD
- ~~~
- git log -1 HEAD
- ~~~
- or to a local branch
- ~~~
- git log -1 master
- ~~~
- or a remote branch
- ~~~
- git log -1 origin/master
- ~~~
- or a tagged commit
- ~~~
- git log -1 0.4.1
- ~~~
- or a reference log entry
- ~~~
- git log -1 HEAD@{5}
- ~~~
- or a reference as it was some time ago
- ~~~
- git log -1 master@{1.hour.10.minutes.ago}
- ~~~
- or an abbreviated commit ID
- ~~~
- git log -1 1ffb
- ~~~
- or a stash references
- ~~~
- git log stash@{1}
- ~~~
- or an ancestry reference
- ~~~
- git log HEAD~3
- ~~~
+We've seen a bunch of different type of arguments passed to commands such as git checkout. For example, references to HEAD
+~~~
+git log -1 HEAD
+~~~
+or to a local branch
+~~~
+git log -1 master
+~~~
+or a remote branch
+~~~
+git log -1 origin/master
+~~~
+or a tagged commit
+~~~
+git log -1 0.4.1
+~~~
+or a reference log entry
+~~~
+git log -1 HEAD@{5}
+~~~
+or a reference as it was some time ago
+~~~
+git log -1 master@{1.hour.10.minutes.ago}
+~~~
+or an abbreviated commit ID
+~~~
+git log -1 1ffb
+~~~
+or a stash references
+~~~
+git log stash@{1}
+~~~
+or an ancestry reference
+~~~
+git log HEAD~3
+~~~
 
- Git is clever about allow you to use any way is most convenient, and will ultimately (in most cases) translate them all to a commit reference behind the scenes.
+Git is clever about allow you to use any way is most convenient, and will ultimately (in most cases) translate them all to a commit reference behind the scenes.
