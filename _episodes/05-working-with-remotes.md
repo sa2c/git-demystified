@@ -288,7 +288,7 @@ $ git log
 > guess what they do?
 >
 >> ## Solution
->> The `--merged` and `--unmerged` options filter the branches to show
+>> The `--merged` and `--no-merged` options filter the branches to show
 >> us only ones which have been merged and only ones which have not been
 >> merged respectively. This is useful when we need to determine if
 >> there is any work in progress which needs to be merged.
