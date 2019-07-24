@@ -8,15 +8,15 @@ objectives:
 - "Gentle reminder of basic git usage"
 - "Understanding of how git handles changes"
 keypoints:
-- "Understand how files end up in the staging area"
-- "Understand how the staging area is turned into a commit"
-- "Being able to inspect commits blobs and trees"
+- "Learnt how files end up in the staging area"
+- "Learnt how the staging area is turned into a commit"
+- "Learnt how to inspect commits, blobs and trees"
 ---
 {% include links.md %}
 
 In this section we'll start by talking about things that may be familiar, such as adding and commit, and then moving into talking about branching workflows.
 
-## A simple git branching workflow
+# A simple personal git workflow
 Let's create a copy of a repository that we can work on, by visiting the repository at
 <a href='https://github.com/sa2c/example-gitflow'>
     https://github.com/sa2c/example-gitflow
@@ -433,3 +433,29 @@ Note here that for commits 15aab and below, we all have the same commit ID. It's
 >## Branches
 >Each commit is some metadata about the author, a pointer to files/contents, a commit message and a pointer to the previous commit. This creates a chain of commits extending back in time. We could imagine how we could follow this chain back to the start if we know the last commit. This is exactly what a branch is, a pointer to the latest commit.
 {: .callout}
+
+>## Patching
+>First, make as many changes as you like to README.mdown, in different parts of the file. From these changes use `git add -p` to create three or four difference commits that each contain only some of the changes. You can practice:
+>* choosing sections to add/remove to a commit with <kbd>y</kbd> and <kbd>n</kbd>
+>* splitting up changes grouped together using <kbd>s</kbd>
+>* splitting up changes on the same line into different commits using <kbd>e</kbd>
+{: .challenge}
+
+>## Finding trees
+>First, consider would you expect the top level directory tree of this commit and the last commit to be the same or different?
+>Verify your guess using `git log` and `cat -p <thing-id>`
+>>## Solution
+>>* use `git log` to find the ID of the current and last commits (the 40-character string in git log).
+>>* write down the first six characters of both, let's say (for example) they are `a12345` and `b56789`.
+>>* `git cat-file -p a12345` will then show you the commit content. This will contain the tree ID
+>>* `git cat-file -p b56789` will then show you the commit content of the second commit. 
+>>* Compare the ID shown for tree in both.
+>{: .solution}
+{: .challenge}
+
+>## Finding blobs
+>Use `git cat-file -p` to see the content of both trees from the last excercise. What can you tell about which files have changed and which have not from the tree? Did this match your expectation? Does the blob ID change for files which have the same content?
+>>## Solution
+>>Files with the same content should have the same blob ID in the tree. Files with different content will have different blob IDs.
+>{: .solution}
+{: .challenge}

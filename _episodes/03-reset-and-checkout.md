@@ -15,8 +15,8 @@ keypoints:
 ---
 {% include links.md %}
 
-We've already seen some examples of the git checkout. In this section we'll explore the checkout command further, and see how they work in practice.
-## Reset
+In the last lesson we learnt about commits and how they chain together to form a sequence. In this lesson we'll start to learn how to manipulate that sequence of commits, in the context of the three trees. We'll explore this with a simple repository.
+## Exploring the repository
 ~~~
 $ git clone git@github.com:sa2c/example-blacksheep.git ~/example-blacksheep
 ~~~
@@ -58,8 +58,11 @@ $ git log -p
 {: .language-bash}
 This command would likely be too much information for all but a simple repository, but in this case it's exactly what we need.
 
+# Reset
+The reset command is used to manipulate the state of the three trees (working directory, staging area and current commit).
+
 ## Reset soft
-Let's say that we decide after creating the commits that this is too granular. We created the last three commits independently when we were writing the file, but actually, since they're on the same line, it now makes sense to us to group them logically into a single commit. Let's do this with the reset command
+Let's say that we decide after creating the commits we saw previously are too granular. We created the last three commits independently when we were writing the file, but actually, since they're on the same line, it now makes sense to us to group them logically into a single commit. Let's do this with the reset command
 ~~~
 $ git reset --soft HEAD~3
 ~~~
@@ -69,7 +72,7 @@ The `git reset` command, with `--soft` specified, is the simplest variation of t
 $ git status
 ~~~
 {: .language-bash}
-Since the staging area and working directory are not touched by git reset `--soft`, we still have some changes ready to commit.
+Since the staging area and working directory are not touched by git reset `--soft`, we still have the same changes ready to commit.
 Let's see what they are:
 ~~~
 $ git diff --staged
@@ -90,39 +93,16 @@ There are now only two commits, and each one adds a complete line to the file. N
 $ git reset --soft origin/master
 ~~~
 {: .language-bash}
-And let's check the repository again, with
+The reference `origin/master` is a commit-ish thing which points to the state of the remote repository. We'll explain this in more detail later.
+
+And let's check the repository history again, with
 ~~~
 $ git log -p
 ~~~
 {: .language-bash}
 
->## Reset and commit IDs
-> Use git reset to throw away the last commit, but keep the changes in the index, like this:
-> ~~~
-> $ git reset HEAD~
-> ~~~
-> {: .language-bash}
-> Check that this has work successfully with using a git log command. Recreate the commit with the same commit message, like this:
-> ~~~
-> $ git commit -m ', three bags full'
-> ~~~
-> {: .language-bash}
-> What do you notice that is different about the commit.
->
-> You can use
-> ~~~
-> $ git cat-file -p <some-commit-id>
-> ~~~
-> {: .language-bash}
-> where `<some-commit-id>` is the ID of a commit, to show all the information that git knows about that commit (and many other objects). Can you guess by running this command why the commit id might be different? Can you guess what might happen if someone else tried to pull your work after you change a commit ID?
->> ## Solution
->> Recreating a commit changes the commit ID. You should not do this if this is a commit that you have already shared with others, as git will see these as two independent commits. If you push this to a repository, other people may not be able to integrate it with their work.
->{: .solution}
->
-{: .challenge}
-
 ## Reset HEAD and the staging area
-What happens when we leave out the `--soft` option? The default in that case is to perform a "mixed" reset. Let's see how this works:
+What happens when we leave out the `--soft` option? The default in that case is to perform a "mixed" reset. We could use `--mixed` to indicate this, but since it's the default we'll leave this out. Let's see how this works:
 ~~~
 $ git reset HEAD~2
 ~~~
@@ -135,7 +115,7 @@ $ git status
 This time the changes appear to be in the working directory as before, but not in the staging area.
 Running `git log`,
 ~~~
-$ git log --oneline origin/master
+$ git log --oneline
 ~~~
 {: .language-bash}
 shows us that HEAD has indeed moved back by two commits. Let's check the files out with:
@@ -145,59 +125,28 @@ $ git diff
 {: .language-bash}
 It appears that the changes from the last two commits indeed waiting to be staged. This is because the contents of the commit that HEAD has been moved to has also been copied into the staging area. This is useful if we want to rewind, to change a set of commits, but actually want to manually add just the files you're interested in.
 
->## Back to a clean slate
-> Copying the contents of a file from the current commit is often the opposite action to adding some changes. Make some changes to a file, add that file to the staging area, and use git reset to undo the action of git add.
->
->>## Solution
->>Add changes to a file with
->> ~~~
->> $ git add <file>
->> ~~~
->> {: .language-bash}
->> then reset the files with
->> ~~~
->> $ git reset <file>
->> ~~~
->> {: .language-bash}
->> or
->> ~~~
->> $ git reset HEAD <file>
->> ~~~
->> {: .language-bash}
->> or
->> ~~~
->> git reset HEAD -- <file>
->> ~~~
->> {: .language-bash}
->> Note how if we leave out HEAD, then git will assume we want to pull
->> from the HEAD reference by default.
->{: .solution}
->
-{: .challenge}
-
-What happens if we have two files? Make changes to two files, add them both to the staging area, then use
-~~~
-$ git reset
-~~~
-{: .language-bash}
-to undo the addition to the staging area. Not that not specifying a commit will use HEAD by default. What happens to the second file? What happens to the working directory files?
-
-## Reset everything: treat with care
-The final type of reset we can do is called a "hard" reset. Hard is the "next level up" from mixed. Let's first move our repository back to the way it was before with a mixed reset
+We can reset our repository to the way it was before with
 ~~~
 $ git reset origin/master
 ~~~
 {: .language-bash}
-We'll check that this is the case.
+And check this with
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-Some of you will probably see a status message showing no changes, so the working directory, staging area and current commit are identical. Those of you who've changed files will probably see some changes ready to commit. Don't worry. Let's open the file blacksheep.txt and add the line:
+and
 ~~~
-$ One for the faster and one of same.
+$ git log
 ~~~
-{: .language-bash}
+
+## Reset everything: treat with care
+The final type of reset we can do is called a "hard" reset. Hard is the "next level up" from mixed.
+
+Let's open the file blacksheep.txt and add the line:
+~~~
+One for the faster and one of same.
+~~~
 We check what is ready to commit:
 ~~~
 $ git diff
@@ -215,7 +164,7 @@ $ git log -p
 {: .language-bash}
 Ahhh....but now we spot our mistake!
 
-We could use a mixed reset to step back by one commit, and then change the files - but maybe we would rather just go back to before we made the changes in the first place and reset the files as well. This is where a hard reset comes in. It does everything a mixed reset does, but also drops all the changes. Let's try it
+We could use a mixed reset to step back by one commit, and then change the files - but maybe we would rather just go back to before we made the changes in the first place and reset the files as well. This is where a hard reset comes in. It does everything a mixed reset does, but also drops all the changes in the working directory. Let's try it
 ~~~
 $ git reset --hard HEAD~
 ~~~
@@ -238,7 +187,72 @@ $ git log
 
 Be VERY, VERY careful with a hard reset. If there are changes in your working directory that haven't been committed yet, you can very easily lose them. It is one of the very few commands in git that will allow you to delete some of your work. If you use this command, it is very likely that you are *trying* to lose changed - make sure this is what you want.
 
->## Back to a clean slate
+>## What about the commits?
+> Before attempting this challenge, reset your repository with `git reset --hard origin/master`
+>
+> Use git reset to throw away the last commit, but keep the changes in the index:
+> ~~~
+> $ git reset HEAD~
+> ~~~
+> {: .language-bash}
+> Check that this has work successfully with using a git log command. Recreate the commit with the same commit message:
+> ~~~
+> $ git commit -m ', three bags full'
+> ~~~
+> {: .language-bash}
+> What do you notice that is different about the commit.
+>
+> You can use
+> ~~~
+> $ git cat-file -p <some-commit-id>
+> ~~~
+> {: .language-bash}
+> where `<some-commit-id>` is the ID of a commit, to show all the information that git knows about that commit (and many other objects). Can you guess by running this command why the commit id might be different? Can you guess what might happen if you had already shared this commit with someone else and they had work based on it?
+>> ## Solution
+>> Recreating a commit changes the commit ID. You should not do this if this is a commit that you have already shared with others, as git will see these as two independent commits. If you push this to a repository, other people may not be able to integrate it with their work.
+>{: .solution}
+>
+{: .challenge}
+
+>## Back in time 
+> Before attempting this challenge, reset your repository with `git reset --hard origin/master`
+>
+> Copying the contents of a file from the current commit is often the opposite action to adding some changes. You can restrict the action of reset to a file with:
+>~~~
+>git reset -- filename
+>~~~
+>{: .language-bash}
+> Make some changes to a file, add that file to the staging area, and use git reset to undo the action of git add.
+>
+>>## Solution
+>>Add changes to a file with
+>> ~~~
+>> $ git add <file>
+>> ~~~
+>> {: .language-bash}
+>> then reset the files with
+>> ~~~
+>> $ git reset -- <file>
+>> ~~~
+>> {: .language-bash}
+>> or
+>> ~~~
+>> $ git reset HEAD -- <file>
+>> ~~~
+>> {: .language-bash}
+>> or
+>> ~~~
+>> git reset HEAD -- <file>
+>> ~~~
+>> {: .language-bash}
+>> Note how if we leave out HEAD, then git will assume we want to pull
+>> from the HEAD reference by default.
+>{: .solution}
+>
+{: .challenge}
+
+>## Gone with the wind
+> Before attempting this challenge, reset your repository with `git reset --hard origin/master`
 >
 > `git reset --hard` is most useful to throw away all the changes in the current working directory (and the staging area) and start again from the files in the last commit (HEAD). Make some changes in your repository, without adding them to the staging area, check them with git status, then blow away the changes by doing a hard reset to HEAD.
 > Use `git status` to check that the changes have gone.
@@ -282,7 +296,12 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 >
 {: .challenge}
 
-## Commit-level Checkout
+
+# Checkout
+
+With reset, we changed what it meant to be the *latest commit* by rewinding history. With checkout we change the *current commit* (i.e. where we are). This is an important distinction.
+
+## Checking out commits
 We'll add some content to the file README.txt.
 ~~~
 A sample repository containing the nursery rhyme "Baa, baa, black sheep"
@@ -303,14 +322,14 @@ There are some changes to README.txt, let's see what they are
 $ git diff
 ~~~
 {: .language-bash}
-Git has checkout out the files as they were three commits ago, but has left the changes in our local repository, because these changes were made to another file. Let's verify that the contents of the repository has in fact changed
+Git has checkout out the files as they were three commits ago, but has left the changes in our local repository, because these changes did not conflict. Let's verify that the contents of the repository has in fact changed
 ~~~
 $ cat blacksheep.txt
 ~~~
 {: .language-bash}
 and the log
 ~~~
-$ git log -2 --oneline origin/master
+$ git log -5 --oneline --decorate origin/master
 ~~~
 {: .language-bash}
 We can see that the current commit, HEAD, has been moved back by three commits, but that master (and origin/master) are in the same place. This is useful if we want to move around and look around, without changing the branches themselves. We can go back to where we were with
@@ -453,6 +472,7 @@ $ git reset README.txt
 ~~~
 {: .language-bash}
 Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. `--soft`) doesn't make sense with files, and `--hard` is equivalent ot checkout.
+
 
 >## The dangers of checkout
 >
