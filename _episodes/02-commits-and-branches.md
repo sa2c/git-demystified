@@ -28,12 +28,12 @@ $ cd ~/
 {: .language-bash}
 Once the repository has forked with can clone it with
 ~~~
-$ git clone git@github.com:sa2c/example-gitflow.git
+$ git clone git@github.com:<your-github-username>/example-gitflow.git
 ~~~
 {: .language-bash}
 This command will output something like
 ~~~
-$ git clone git@github.com:sa2c/example-gitflow.git
+$ git clone git@github.com:<your-github-username>/example-gitflow.git
 Cloning into 'example-gitflow'...
 remote: Enumerating objects: 3, done.
 remote: Counting objects: 100% (3/3), done.
@@ -71,15 +71,15 @@ The status command tells us that the AUTHORS file has been modified, but not add
 $ git add AUTHORS
 ~~~
 {: .language-bash}
-We can think of this action as copying the file README.mdown into the staging area. The staging area is a set of files that we think of as the "next proposed commit".
+We can think of this action as copying the file AUTHORS into the staging area. The staging area is a set of files that we think of as the "next proposed commit".
 
 Let's  the state of our repository, with
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-We now see the file under "Changes to be committed", which tells us that it's different between the staging area and the current commit. But it is not under "Changes not staged for commit", so it is the same between the working directory and the staging area.
-Lets make some further changes to the working directory files, by deleting the line we added to the top of the README.mdown file.
+We now see the AUTHORS file under "Changes to be committed", which tells us that it's different between the staging area and the current commit. But it is not under "Changes not staged for commit", so it is the same between the working directory and the staging area.
+Lets make some further changes to the working directory files, by deleting the line we added to the top of the AUTHORS file.
 Looking at the status now
 ~~~
 $ git status
@@ -121,27 +121,7 @@ See our Wiki for up-to-date [Installation Instructions](https://github.com/nvie/
 $ git status
 ~~~
 {: .language-bash}
-This time, we think we might be working on this change for a few weeks before we want to share it with the world, because you need to check documentation with your supervisor first, and you won't meet them until next week. Let's create a new branch to contain these changes and merge them at a later date. This is a very common workflow in git that allows us to work on very long-running changes and short, quick-turnaround changes, in parallel without breaking the code. Let's create a new branch with:
-~~~
-$ git branch update-docs
-~~~
-{: .language-bash}
-We can see all our branches with
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-Notice, we're still on the master branch. We need to move over to the update-docs branch
-~~~
-$ git checkout update-docs
-~~~
-{: .language-bash}
-And we can check the branches again, with
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-Now, when we commit, our commits get added to the branch update-docs, without changing the master branch. Let's add our changes, but let's divide it into two commits
+Let's add our changes, but let's divide it into two commits
 ~~~
 $ git add -p README.mdown
 ~~~
@@ -152,7 +132,9 @@ $ git status
 ~~~
 {: .language-bash}
 We now see the file both under "Changes to be committed" and under "Changes not staged for commit", so like before the file is different in all of the three areas. In the working directory it has all of our changes, in the staging area it has the changes we selected with `git add -p`, and in the current commit it has no changes at all (yet).
-Note, git hasn't chosen parts of the file or checked changes into the staging area. It just created for us a version of the file with only some of the changes, the file in the staging area may never have existed with the exact same contents in the working directory.
+> ## Manipulating files, not changes
+Git hasn't chosen parts of the file or checked changes into the staging area. It just created for us a version of the file with only some of the changes, the file in the staging area may never have existed with the exact same contents in the working directory.
+{: .callout}
 Let's see how the files in the staging look compared to the latest commit.
 ~~~
 $ git diff --staged
@@ -168,7 +150,7 @@ We're happy, so we can commit
 $ git commit -m 'Expanded on the introduction'
 ~~~
 {: .language-bash}
-Let's check what differences are left with
+Let's take a look at the differences which are left with
 ~~~
 $ git status
 ~~~
@@ -191,21 +173,6 @@ $ git commit -m 'Changed wording to be more inclusive'
 Let's have a look at our history as it is currently with
 ~~~
 $ git log
-~~~
-{: .language-bash}
-Let's leave this branch now, as we don't want to do any more work on documentation for the moment, and move back to the master branch.
-~~~
-$ git checkout master
-~~~
-{: .language-bash}
-We verify we're on another branch with
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-we should see an asterisk next to master, to indicate it's the current branch. We can further verify the state of the repo with.
-~~~
-$ git log --oneline --graph --all
 ~~~
 {: .language-bash}
 Let's say that we notice that the URL in the documentation is wrong. This is a small change, and we're happy to make this change directly in master so that everyone sees the change immediately. We will do it using the sed command
