@@ -1,9 +1,9 @@
 ---
-title: "Committing and Branching"
+title: "Commits Revisited"
 teaching: 45
 exercises: 0
 questions:
-- How do commits work and how do I create branches?
+- How do commits work?
 objectives:
 - "Gentle reminder of basic git usage"
 - "Understanding of how git handles changes"
