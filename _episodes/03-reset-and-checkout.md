@@ -475,6 +475,13 @@ $ git reset README.txt
 {: .language-bash}
 Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. `--soft`) doesn't make sense with files, and `--hard` is equivalent ot checkout.
 
+>## The disappearing command
+> What happens if you run `reset --soft HEAD -- <filename>` or `reset --hard HEAD -- <filename>` with a file in the working directory? Can you guess why this is the behaviour?
+>>## Solution
+>>Neither of these two commands exist. `reset --soft` with files makes no sense, since `--soft` operates on the current commit only.
+>> `reset --hard` with files could make sense, but would be exactly the same as `checkout` with files, therefore only one of the two is implemented.
+>{: .solution}
+{: .challenge}
 
 >## The dangers of checkout
 >
