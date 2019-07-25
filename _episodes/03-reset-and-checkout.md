@@ -375,27 +375,6 @@ $ git checkout HEAD~3
 {: .language-bash}
 Now we can see that we get a long warning message about a detached HEAD. This means that we're not on any branch, if we continue from where we are now, we will be creating and "alternate past", with a different set of parallel changes. Unless these we create a branch to keep these, we will lose them. Git helpfully tells us that what we probably want is to use the -b option to create a new branch that will hold this information.
 
->## a-HEAD or not on a-HEAD
-> What happens when we use reset to move when we're in a detached HEAD state? How does it differ from when we use reset when a branch is checked out? Run the following two sets of commands - what do they do differently? What is different in output of the final log command? Why?
-> ~~~
-> $ git checkout master
-> $ git checkout HEAD~1
-> $ git reset --hard <commit-id>
-> $ git log --oneline origin/master
-> ~~~
-> {: .language-bash}
->
-> ~~~
-> $ git checkout master
-> $ git reset  --hard <commit-id>
-> $ git log --oneline origin/master
-> ~~~
-> {: .language-bash}
->>## Solution
->>When reset is run and we are not on any branch (e.g. in a detached HEAD state), then the reset command cannot change the current branch. It is an operation that doesn't make sense when we have no current branch. In this case, reset will simply move the pointer HEAD, leaving the branch where it is.
->{: .solution}
->
-{: .challenge}
 ## Checkout of only specific files
 Both the checkout and reset commands can take files as arguments, in this case they behave quite differently. Let's reset our repository to the way it is on the remote server
 ~~~
@@ -474,6 +453,28 @@ $ git reset README.txt
 ~~~
 {: .language-bash}
 Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. `--soft`) doesn't make sense with files, and `--hard` is equivalent ot checkout.
+
+>## a-HEAD or not on a-HEAD
+> What happens when we use reset to move when we're in a detached HEAD state? How does it differ from when we use reset when a branch is checked out? Run the following two sets of commands - what do they do differently? What is different in output of the final log command? Why?
+> ~~~
+> $ git checkout master
+> $ git checkout HEAD~1
+> $ git reset --hard <commit-id>
+> $ git log --oneline origin/master
+> ~~~
+> {: .language-bash}
+>
+> ~~~
+> $ git checkout master
+> $ git reset  --hard <commit-id>
+> $ git log --oneline origin/master
+> ~~~
+> {: .language-bash}
+>>## Solution
+>>When reset is run and we are not on any branch (e.g. in a detached HEAD state), then the reset command cannot change the current branch. It is an operation that doesn't make sense when we have no current branch. In this case, reset will simply move the pointer HEAD, leaving the branch where it is.
+>{: .solution}
+>
+{: .challenge}
 
 >## The disappearing command
 > What happens if you run `reset --soft HEAD -- <filename>` or `reset --hard HEAD -- <filename>` with a file in the working directory? Can you guess why this is the behaviour?
