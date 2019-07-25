@@ -3,7 +3,7 @@ title: "Logging"
 teaching: 20
 exercises: 0
 questions:
-- How can I work in remote teams and with remotely hosted code?
+- How can I find the commits I'm looking for?
 objectives:
 - "Learn to search for specific changes"
 keypoints:
