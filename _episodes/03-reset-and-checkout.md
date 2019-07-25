@@ -7,11 +7,13 @@ questions:
 objectives:
 - "Be able to manipulate the content of the worktree, staging area and commit"
 - "Be able to change the last in a branch"
+- "Understand HEAD and the latest commit"
 - "Be able to move to historical states of the repository"
 keypoints:
 - "Learnt to change the state of the index, working tree using git reset"
 - "Learnt to change the commit which this branch points to with git reset"
 - "Learnt to selectively pick up historical versions of files with git checkout"
+- "Understand HEAD, master and the latest commit"
 ---
 {% include links.md %}
 

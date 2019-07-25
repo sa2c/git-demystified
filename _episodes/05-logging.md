@@ -5,15 +5,9 @@ exercises: 0
 questions:
 - How can I work in remote teams and with remotely hosted code?
 objectives:
-- "Learn to work with multiple remotes"
-- "Learn to work with remote branches"
-- "Learn to initialise submodules"
-- "Learn to use tags"
+- "Learn to search for specific changes"
 keypoints:
-- "We've been introduced to remotes and working with multiple remotes"
-- "We've seen how to track, work with and push to remote branches"
-- "We've used and created tags to give names to interesting commits"
-- "We've learnt to watch out for submodules, and initialise them"
+- "We've been introduced powerful logging commands"
 ---
 {% include links.md %}
 
@@ -36,7 +30,7 @@ could possibly need.
 
 Let's grab a repository from the web to start working with
 ~~~
-$ git clone git@github.com:sa2c/example-gitflow-modified.git
+$ git clone git@github.com:sa2c/example-gitflow-modified.git ~/example-gitflow-modified
 ~~~
 {: .language-bash}
 
