@@ -17,18 +17,13 @@ keypoints:
 In this section we'll start by talking about things that may be familiar, such as adding and commit, and then moving into talking about branching workflows.
 
 # A simple personal git workflow
-Let's create a copy of a repository that we can work on, by visiting the repository at
+Let's create a copy of a repository that we can work on, available at
 <a href='https://github.com/sa2c/example-gitflow'>
     https://github.com/sa2c/example-gitflow
 </a>
-and clicking on the fork icon in the top right corner. We then change to our home directory with the following command
+We clone the repository with
 ~~~
-$ cd ~/
-~~~
-{: .language-bash}
-Once the repository has forked with can clone it with
-~~~
-$ git clone git@github.com:sa2c/example-gitflow.git
+$ git clone git@github.com:sa2c/example-gitflow.git ~/example-gitflow
 ~~~
 {: .language-bash}
 This command will output something like
@@ -53,7 +48,7 @@ then there is an issue with your ssh setup. Take another look at the
 previous episode, or ask a helper to check if with you. Once you've
 cloned the respository, change into that directory with
 ~~~
-$ cd example-gitflow
+$ cd ~/example-gitflow
 ~~~
 {: .language-bash}
 Let's start making a few changes around here. We're working on a example repo, so to avoid confusion we're writing the in the README.mdown file
