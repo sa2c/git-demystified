@@ -16,7 +16,7 @@ keypoints:
 
 In this section we'll start by talking about things that may be familiar, such as adding and commit, and then moving into talking about branching workflows.
 
-# A simple personal git workflow
+# A local git workflow
 Let's create a copy of a repository that we can work on, available at
 <a href='https://github.com/sa2c/example-gitflow'>
     https://github.com/sa2c/example-gitflow
