@@ -233,7 +233,7 @@ $  git commit -m 'Changed title of README.mdown'
 {: .language-bash}
 We have now created a new current commit, by copying the files as they were in the staging area. We verify this with:
 ~~~
-$  git log
+$  git log -3
 ~~~
 Note: you can exit git log by typing the <kbd>Q</kbd> key.
 
