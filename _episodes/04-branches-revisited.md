@@ -18,7 +18,9 @@ Let's say we're expecting to work on something by itself before sharing with the
 
 We'll create new branches to contain these changes and merge them at a later date. This is a very common workflow in git that allows us to work on very long-running changes and short, quick-turnaround changes, in parallel without breaking the code. 
 
-We'll move into our example-git-flow repository,
+Download the following file [from here](https://github.com/M4rkD/git-beyond-the-basics/blob/gh-pages/example-gitflow-branches.zip?raw=true).
+
+Unzip it as `~/example-gitflow-branches` and change into that directory:
 ~~~
 $ cd ~/example-gitflow-branches
 ~~~
