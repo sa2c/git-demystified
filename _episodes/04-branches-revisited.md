@@ -1,5 +1,5 @@
 ---
-title: "Branches revisited"
+title: "Working with branches"
 teaching: 30
 exercises: 20
 questions:
@@ -20,196 +20,102 @@ We'll create new branches to contain these changes and merge them at a later dat
 
 We'll move into our example-git-flow repository,
 ~~~
-$ cd ~/example-gitflow
-~~~
-{: .language-bash}
-And reset the respository to the way it was when we downloaded it
-~~~
-$ git reset --hard origin/master
+$ cd ~/example-gitflow-branches
 ~~~
 {: .language-bash}
 
-Let's create a new branch with:
-~~~
-$ git branch readme-url
-~~~
-{: .language-bash}
-We can see all our branches with
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-Notice, we're still on the master branch. We could switch branches right now, but let's make changes on this branch for the moment to see what happens.
-
-Let's first take a look at our git log.
-~~~
-$ git log -4 --oneline
-~~~
-{: .language-bash}
-Note that we have two branch names, on the same commit as HEAD.
-> ## Decorations
->On some older versions of git, you may not see the decorations (e.g. HEAD and master). In this case you will need to add the argument `--decorate` to the `git log` command.
-{: .callout}
-
-> ## Branches are labels
->Based on our understanding of commits and chaining or commits, we can see understand branches now as simply a label for the latest commit in a chain. In this case `master` and `party-script` currently point to the same commit.
-{: .callout}
-
-We open README.mdown
-~~~
-$ nano README.mdown
-~~~
-{: .language-bash}
-Add search for `nvie` and replace with `sa2c`. We'll check that we've made some changes
-~~~
-$ git diff
-~~~
-And add the file
-~~~
-$ git add README.mdown
-~~~
-{: .language-bash}
-And double check with status
-~~~
-$ git status
-~~~
-{: .language-bash}
-Now, let's move over to the readme-url branch
-~~~
-$ git checkout readme-url
-~~~
-{: .language-bash}
-Remember, checkout moves us to another commit. We now note that it also switches branch when necessary. And we can see the branches again, with
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-Note the asterisk next to the current branch. We can see that our repository is also in the same state as before:
-~~~
-$ git status
-~~~
-{: .language-bash}
-
-When we commit, our commits always get added as children of the current commit, which in this case is on another branch. Let's create the commit
-~~~
-$ git commit -m 'Updated README.mdown URLs'
-~~~
-{: .language-bash}
-We can see the commits with
-~~~
-$ git log -4 --oneline
-~~~
-{: .language-bash}
-Note how readme-url has move forward by one commit, but the master branch has not. 
-Although it isn't best practice, we'll also add our name to the AUTHORS list as well in this branch.
-~~~
-$ nano AUTHORS
-~~~
-{: .language-bash}
-We'll check the change
-~~~
-$ git diff
-~~~
-{: .language-bash}
-And if we're happy that the change is what we expect, we can add it as
-~~~
-$ git commit -a -m 'add to AUTHORS list'
-~~~
-{: .language-bash}
-
-Let's go back to master and continue from there
-~~~
-$ git checkout master
-~~~
-{: .language-bash}
-Let's create a second branch starting from master, that further changes README.mdown. We'll use a shortcut to create and checkout the branch in a single command this time
-~~~
-git checkout -b readme-faq
-~~~
-{: .language-bash}
-We'll check the branch we're on with
-~~~
-git branch -v
-~~~
-{: .language-bash}
-We should see an asterisk next to readme-faq, indicating we're on that branch.
-Let's look at our repository now
-~~~
-$ git log -4 --oneline
-~~~
-{: .language-bash}
-This only shows us the changes which are in the history of the current branch, we can show multiple branches by naming them
+We can list all the commits with
 ~~~
 $ git log -4 --oneline master readme-url readme-faq
 ~~~
 {: .language-bash}
-Note the position of HEAD and how we can move HEAD by using checkout.
-Now we'll adding the word "Please"" to the FAQ line, as before.
-~~~
-nano README.mdown
-~~~
-{: .language-bash}
-It should read:
-~~~
-FAQ
----
-See the [FAQ](http://github.com/nvie/gitflow/wiki/FAQ) section of the project
-Wiki.
-~~~
-Let's check the changes
-~~~
-git diff
-~~~
-{: .language-bash}
-And add if we're happy
-~~~
-git commit -a -m 'FAQ changes'
-~~~
-{: .language-bash}
 
-We move back to master
-~~~
-$ git checkout master
-~~~
-{: .language-bash}
-And check that we've moved
-~~~
-$ git branch -v
-~~~
-{: .language-bash}
-
-We'll make some politeness changes directly in the master branch, because they're small and quick.
-~~~
-$ nano README.mdown
-~~~
-{: .language-bash}
-We change the heading `Contributing` to read `Please contribute`, as we did earlier. We verify the change
-~~~
-$ git diff
-~~~
-{: .language-bash}
-If we're happy, we'll commit everything with
-~~~
-$ git commit -a -m 'Politeness in contribution'
-~~~
-{: .language-bash}
-Let's have a look at the branches now
-~~~
-$ git log -4 --oneline master readme-url readme-faq
-~~~
-{: .language-bash}
-We can see all the commits, but they're in chronological order. It isn't immediately obvious which belong to which branches. We can fix this with
+OK, lot's of changes here, but there is some information we're not seeing here
 ~~~
 $ git log -4 --oneline --graph master readme-url readme-faq
 ~~~
 {: .language-bash}
 
-We've got three branches now, if we're happy with them, it's time to merge them. We'll check we're on the master branch
+It can be tedious to type every reference, we can use:
+~~~
+$ git log -4 --oneline --graph --all
+~~~
+{: .language-bash}
+
+Let's create a new branch
+~~~
+$ git branch my-branch
+~~~
+{: .language-bash}
+
+And check what are branches are
+~~~
+$ git branch -v
+~~~
+{: .language-bash}
+
+We're still on the master branch, let's switch to our new branch
+~~~
+$ git checkout my-branch
+~~~
+{: .language-bash}
+
+Let's make a change
+~~~
+$ touch some-change
+~~~
+{: .language-bash}
+
+And check the status
+~~~
+$ git status
+~~~
+{: .language-bash}
+
+And commit the change
+~~~
+$ git commit -a -m 'A commit'
+~~~
+{: .language-bash}
+
+Our log now shows we've got multiple versions
+~~~
+$ git log -4 --oneline --graph --all
+~~~
+{: .language-bash}
+Let's create another branch, in one command
+~~~
+$ git checkout -b another-branch
+~~~
+{: .language-bash}
+
+How does our tree look now?
+~~~
+$ git log -4 --oneline --graph --all
+~~~
+{: .language-bash}
+Let's no go back to master:
 ~~~
 $ git checkout master
 ~~~
 {: .language-bash}
-We'll first merge the readme-faq branch
+
+~~~
+$ git log -4 --oneline --graph --all
+~~~
+{: .language-bash}
+Let's try to delete our branch
+~~~
+$ git branch --delete --force my-branch another-branch
+~~~
+{: .language-bash}
+Git won't let us delete something isn't merged, that's helpful:
+~~~
+$ git branch --delete --force my-branch another-branch
+~~~
+{: .language-bash}
+
+Now let's take a look at the branches that existed before. We'll first merge the readme-faq branch
 ~~~
 $ git merge readme-faq
 ~~~
