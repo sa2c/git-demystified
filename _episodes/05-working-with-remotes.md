@@ -203,6 +203,10 @@ $ git log
 ~~~
 {: .language-bash}
 
+>## Forcing a push
+>You should always avoid pushing when your local content will change the remote content (rather than adding to it). If you ever find yourselves in a situation where that is not true,
+you can use `git push --force-with-lease`. This will check that nobody else had modified and uploaded content before you push. This resolves issues with people inadvertently losing work, but still can cause problems for other people. It's best to avoid either.
+
 >## Working together
 > Find one or more partners to work with, and add the repository of
 > one of the group as a new remote called "`partner`". Add a single
