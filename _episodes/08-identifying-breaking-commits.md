@@ -15,7 +15,7 @@ keypoints:
 ## Episode setup
 First we need to pull down some code from a remote repository, let's change to our Desktop
 ~~~
-$ cd ~/Desktop
+$ cd ~/git-demystified
 ~~~
 {: .language-bash}
 and clone the code

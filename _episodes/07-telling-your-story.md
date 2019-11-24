@@ -14,120 +14,113 @@ keypoints:
 {% include links.md %}
 
 ## Episode setup
-First we need to pull down some code from a remote repository, let's change directory to our Desktop
+First we need to switch to some code
 ~~~
-$ cd ~/Desktop
-~~~
-{: .language-bash}
-and clone the code
-~~~
-$ git clone git@github.com:sa2c/example-gitflow-modified.git
+$ cd ~/git-demystified/episode_7.1
 ~~~
 {: .language-bash}
-This is the gitflow repository with the changes we applied to it earlier in the workshop, but without merging the branches.
+
+Lets look at the history of the current branch.
 ~~~
-$ cd example-gitflow-modified
-~~~
-{: .language-bash}
-Let's take a look at the remote branches in this repository
-~~~
-$ git branch -vv -a
-~~~
-{: .language-bash}
-We've got one tracking branch (`master`) and a number of remote
-branches, with some changes. Let's look at the history of the current
-branch.
-~~~
-$ git log --oneline --graph -10
+$ git log --oneline --all --graph
 ~~~
 {: .language-bash}
 
 ## Reverting changes
-We see a commit "added to AUTHORS file". Let's imagine that I'm feeling shy, and I would like to remove my name from the `AUTHORS` file. I can undo the effect of a previous commit with the `git revert` command
+We see a commit "Phantom commit" in our history. Remember that this adds the file phantom_file. Let us remove this file, by undoing all the changes in this commit.
 
 ~~~
-$ git revert e38a
+$ cd ~/git-demystified/episode_7.1
 ~~~
 {: .language-bash}
-Git has added a commit which does the inverse of the commit we specified. Let's take a look at this
+
+Check the file is there
+~~~
+$ ls
+~~~
+{: .language-bash}
+
+And undo the change
+~~~
+$ git revert e93c7
+~~~
+{: .language-bash}
+check the log
+~~~
+$ git log --oneline --all --graph
+~~~
+{: .language-bash}
+Show the latest commit
 ~~~
 $ git show HEAD
 ~~~
 {: .language-bash}
+
 Notice that `git revert` creates a new commit. This is done
 intentionally, so that we don't have to change any of the commits
 already pushed to the remote (which other people may have access to).
 
+> ## Pushing
+> Changing commits which other people have access to is a bad idea, because they won't be able to build on those commits. Never change history further back than where you have pushed. You can normally see this with the label `origin/current-branch-name` (e.g. `origin/master`) in your git log.
+{: .callout}
+
+
 ## Rebasing
-Let's have another look at our history of all branches
+In git we have two options on how to integrate changes: *merging* and *rebasing*. Merges we've already encountered, and is by far the most common option. Always default to a merge if in doubt, but rebase gives you additional options with how to shape your git history.
+
+Let us redo the previous merge as a rebase.
 ~~~
-$ git log --oneline --graph -10 --all
-~~~
-{: .language-bash}
-I created a feature branch `update-docs`, but let's imagine that
-`update-docs` was much smaller than I intended. In git we have two
-options on how to integrate changes: *merging* and *rebasing*. Merges
-we've already encountered; with rebasing, rather than join two
-branches together, we add commits from one branch to another, making
-it look like the work was done on that branch all along.
-Let's checkout `update-docs` with
-~~~
-$ git checkout update-docs
+$ cd ~/git-demystified/episode_7.2
 ~~~
 {: .language-bash}
-and we'll rebase this onto `master`
+
 ~~~
-$ git rebase master
+$ git checkout another-phantom-tracker
 ~~~
 {: .language-bash}
-Git tried to move the commits, but it found that some of them modified the same line of text, so we've been dropped into a state similar to a merge. Let's take a look at the problem with
+
+And try a rebase instead of merge this time. As before, we have a merge conflict that we have to resolve.
+~~~
+$ git rebase phantom-tracker
+~~~
+{: .language-bash}
+
+
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-We can look in the file affected with
+
+Edit the merged file, choosing the lower option and a `Goblin`.
 ~~~
-$ nano README.mdown
-~~~
-{: .language-bash}
-We pick the second line, but change `nvie` to `sa2c`. Then we add the
-file
-~~~
-$ git add README.mdown
+$ nano phantom_file
 ~~~
 {: .language-bash}
-just as we would in a merge conflict. This time however, we ask the rebase to continue with
+
+
+add the merged file
+~~~
+$ git add phantom_file
+~~~
+{: .language-bash}
+continue the rebase
 ~~~
 $ git rebase --continue
 ~~~
 {: .language-bash}
-We see the rebase applying the next commit, this time successfully. We
-can see the result of the rebase using the same `git log` command
+
+Have a look at the log
 ~~~
-$ git log --oneline --graph -10 --all
-~~~
-{: .language-bash}
-The `origin/update-docs` branch still exits, but git has moved the
-changes on the local tracking branch to the end of the master branch,
-as if we had been working there all along. Note that `master` and
-`update-docs` are still different branches. Let's merge them
-~~~
-$ git checkout master
+$ git log --oneline --all --graph
 ~~~
 {: .language-bash}
-and
+
+Look at the file
 ~~~
-$ git merge update-docs
-~~~
-{: .language-bash}
-and see what happened with
-~~~
-$ git log --graph --oneline -5
+$ cat phantom_file
 ~~~
 {: .language-bash}
-Looks like `master` and `update-docs` both now point to the same
-commit. `master` has been fast-forwarded, because git noticed that the
-history is linear and therefore there is no need for a merge.
+
 > ## Beware the rebase
 > <strong>Never rebase any commits which anyone else may have based any work off (i.e. commits that you have pushed)</strong>
 >
@@ -157,7 +150,7 @@ $ git commit --amend -m 'This commit message has been changed'
 {: .language-bash}
 and we verify we've made a change with
 ~~~
-$ git log --oneline -5
+$ git log --oneline --all --graph
 ~~~
 {: .language-bash}
 This is an easy way to make changes immediately after we've made a

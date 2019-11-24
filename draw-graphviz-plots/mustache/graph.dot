@@ -1,0 +1,16 @@
+digraph b {
+	compound = true
+	node [style=filled];
+
+	subgraph clusterWD {
+		label="{{label}}"
+		labeljust="l"
+
+		{{{files}}}
+
+		root [shape=folder fillcolor=yellow]
+		root [label=" "];
+		
+	}
+
+}

@@ -1,0 +1,5 @@
+"{{filename}}" [shape=note
+		fillcolor="#fcebd9"
+		style={{style}}
+		label = <<font color="{{label_color}}"><b>{{filename}}</b></font><br align="left"/><br/>{{{lines}}}>]
+"{{source}}" -> "{{filename}}" [style={{style}}]

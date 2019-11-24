@@ -1,0 +1,21 @@
+digraph structs {
+  node [shape=record,fontsize=11];
+  rankdir="TB";
+  _79d8 [fillcolor="lightgray", style="filled,rounded", label="{{obj:commit|79d8}|tree\ c088\lparent\ 805a\lauthor\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\lcommitter\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\l\lAdded\ colour\ labels\ and\ list\ of\ blue\ objects\l}"]  _79d8 -> _c088
+  _79d8 -> _805a
+  _c6b6 [fillcolor="white", style="filled,rounded", label="{{obj:blob|c6b6}|Red\ Apples\lStrawberries\lRoses\l}"]  _d783 [fillcolor="white", style="filled,rounded", label="{{obj:blob|d783}|Blueberries\lSmurfs\lCookie\ Monsters\l}"]  _6ec2 [fillcolor="palegreen1", style="filled,rounded", label="{{obj:commit|6ec2}|tree\ 866c\lparent\ e93c\lauthor\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\lcommitter\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\l\lChanges\l}"]  _6ec2 -> _866c
+  _6ec2 -> _e93c
+  _fb68 [fillcolor="lightyellow", style="filled,rounded", label="{{obj:tree|fb68}|100644\ blob\ 33f7\	green\.txt\l100644\ blob\ 8224\	red\.txt\l}"]  _fb68 -> _33f7
+  _fb68 -> _8224
+  _c088 [fillcolor="lightyellow", style="filled,rounded", label="{{obj:tree|c088}|100644\ blob\ d783\	blue\.txt\l100644\ blob\ 158c\	green\.txt\l100644\ blob\ 9049\	red\.txt\l}"]  _c088 -> _d783
+  _c088 -> _158c
+  _c088 -> _9049
+  _daf2 [fillcolor="lightyellow", style="filled,rounded", label="{{obj:tree|daf2}|100644\ blob\ 4cfb\	orange\.txt\l}"]  _daf2 -> _4cfb
+  _33f7 [fillcolor="white", style="filled,rounded", label="{{obj:blob|33f7}|Grapes\lCucumbers\lAvocados\l}"]  _9049 [fillcolor="white", style="filled,rounded", label="{{obj:blob|9049}|Red\ Apples\lStrawberries\lRoses\,\l}"]  _8224 [fillcolor="white", style="filled,rounded", label="{{obj:blob|8224}|Apples\lStrawberries\lRoses\,\l}"]  _805a [fillcolor="palegreen1", style="filled,rounded", label="{{obj:commit|805a}|tree\ fb68\lauthor\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\lcommitter\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\l\lAdd\ lists\ of\ red\ and\ green\ objects\l}"]  _805a -> _fb68
+  _e93c [fillcolor="palegreen1", style="filled,rounded", label="{{obj:commit|e93c}|tree\ c088\lparent\ 805a\lauthor\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\lcommitter\ Mark\ Dawson\ \<mark\.dawson\@swansea\.ac\.uk\>\ 1577869200\ \+0000\l\lAdded\ colour\ specification\ and\ blue\.txt\l}"]  _e93c -> _c088
+  _e93c -> _805a
+  _866c [fillcolor="lightyellow", style="filled,rounded", label="{{obj:tree|866c}|100644\ blob\ d783\	blue\.txt\l100644\ blob\ 158c\	green\.txt\l040000\ tree\ daf2\	other\l100644\ blob\ c6b6\	red\.txt\l}"]  _866c -> _d783
+  _866c -> _158c
+  _866c -> _daf2
+  _866c -> _c6b6
+  _4cfb [fillcolor="white", style="filled,rounded", label="{{obj:blob|4cfb}|Oranges\lPumpkins\lGoldfish\l}"]  _158c [fillcolor="white", style="filled,rounded", label="{{obj:blob|158c}|Green\ Grapes\lCucumbers\lAvocados\l}"]}

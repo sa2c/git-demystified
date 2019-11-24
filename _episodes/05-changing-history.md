@@ -1,9 +1,9 @@
 ---
-title: "Reset and checkout"
+title: "Changing History"
 teaching: 30
 exercises: 20
 questions:
-- What are the differences between reset and checkout and when should I use them?
+- I've just made a mistake, how can I undo it?
 objectives:
 - "Be able to manipulate the content of the worktree, staging area and commit"
 - "Be able to change the last in a branch"
@@ -18,14 +18,10 @@ keypoints:
 {% include links.md %}
 
 In the last lesson we learnt about commits and how they chain together to form a sequence. In this lesson we'll start to learn how to manipulate that sequence of commits, in the context of the three trees. We'll explore this with a simple repository.
+
 ## Exploring the repository
 ~~~
-$ git clone git@github.com:sa2c/example-blacksheep.git ~/example-blacksheep
-~~~
-{: .language-bash}
-This is a very simple repository, let's see what it does. We change into this directory
-~~~
-$ cd ~/example-blacksheep
+$ cd ~/git-demystified/example-blacksheep
 ~~~
 {: .language-bash}
 Let's take a look at the files
@@ -51,7 +47,7 @@ $ git log --oneline
 ~~~
 {: .language-bash}
 Seems like we've added parts of the famous nursery rhyme "Baa, baa,
-black sheep". Since this is a very simple repostitory, let's take a
+black sheep" incrementally. Since this is a very small repostitory, let's take a
 look at the contents of every commit, we can do this with by asking
 `git log` for patches
 ~~~
@@ -90,42 +86,50 @@ Let's take a look at our log to check what has happened
 $ git log -p
 ~~~
 {: .language-bash}
-There are now only two commits, and each one adds a complete line to the file. Note that we created a whole new commit. The old commits are still there if we want them, we can change the repository back to the way it was before by resetting the current branch to the commit which we first downloaded. Let's do that now:
+There are now only two commits, and each one adds a complete line to the file. Note that we created a whole new commit.
+
+## Undoing the change
+The old commits are still there if we want them, we can change the repository back to the way it was before by resetting the current branch to the commit which we first downloaded. Let's do that now, to get the excercise back to the point it was when we started.
 ~~~
 $ git reset --soft origin/master
 ~~~
 {: .language-bash}
-The reference `origin/master` is a commit-ish thing which points to the state of the remote repository. We'll explain this in more detail later.
+The reference `origin/master` is created by `git clone`, and is a reference to the `master` branch on the remote repository. We'll explain this in more detail later.
 
-And let's check the repository history again, with
+Let's look at the repository history again, with
 ~~~
 $ git log -p
 ~~~
 {: .language-bash}
 
 ## Reset HEAD and the staging area
-What happens when we leave out the `--soft` option? The default in that case is to perform a "mixed" reset. We could use `--mixed` to indicate this, but since it's the default we'll leave this out. Let's see how this works:
+In this case, we had all of our content in the staging area reading to commit again. This can be useful when making changes to the commit, but usually we might want to be able to add it again. This is useful if we want to rewind some changes, and re-commit them as a different set of commits.
+
+When we leave out the `--soft` option the default in that case is to perform a "mixed" reset. We could use `--mixed` to indicate this, but since it's the default we'll leave this out. This works by moving `HEAD`, and then copying the current contents of `HEAD` into the staging area. Effectively, this un-adds files.
+
+Let's see how it works.
 ~~~
 $ git reset HEAD~2
 ~~~
 {: .language-bash}
-Let's see what this has done
+What has this done?
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-This time the changes appear to be in the working directory as before, but not in the staging area.
-Running `git log`,
+This time the difference appear are in the working directory, like in the --soft option, but the staging area is the same as current `HEAD`.
+
+We can confirm that HEAD has moved back by two commits with:
 ~~~
 $ git log --oneline
 ~~~
 {: .language-bash}
-shows us that HEAD has indeed moved back by two commits. Let's check the files out with:
+And see the differences with:
 ~~~
 $ git diff
 ~~~
 {: .language-bash}
-It appears that the changes from the last two commits indeed waiting to be staged. This is because the contents of the commit that HEAD has been moved to has also been copied into the staging area. This is useful if we want to rewind, to change a set of commits, but actually want to manually add just the files you're interested in.
+The changes from the last two commits all waiting to be staged. This is because the contents of the commit that HEAD has been moved to has _also_ been copied into the staging area.
 
 We can reset our repository to the way it was before with
 ~~~
@@ -208,6 +212,7 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 > ~~~
 > $ git cat-file -p <some-commit-id>
 > ~~~
+> to take a closer look.
 > {: .language-bash}
 > where `<some-commit-id>` is the ID of a commit, to show all the information that git knows about that commit (and many other objects). Can you guess by running this command why the commit id might be different? Can you guess what might happen if you had already shared this commit with someone else and they had work based on it?
 >> ## Solution
@@ -298,85 +303,8 @@ Be VERY, VERY careful with a hard reset. If there are changes in your working di
 >
 {: .challenge}
 
-
-# Checkout
-
-With reset, we changed what it meant to be the *latest commit* by rewinding history. With checkout we change the *current commit* (i.e. where we are). This is an important distinction.
-
-## Checking out commits
-We'll add some content to the file README.txt.
-~~~
-A sample repository containing the nursery rhyme "Baa, baa, black sheep"
-Let's make some changes to the README.txt in our working directory.
-~~~
-Let's now grab the changes as they where three commits ago, maybe we want to have a look at that version of the repository because we know it was working.
-~~~
-$ git checkout -q HEAD~3
-~~~
-{: .language-bash}
-Git hasn't complained about the changes in the working directory, what has it done with them?
-~~~
-$ git status
-~~~
-{: .language-bash}
-There are some changes to README.txt, let's see what they are
-~~~
-$ git diff
-~~~
-{: .language-bash}
-Git has checkout out the files as they were three commits ago, but has left the changes in our local repository, because these changes did not conflict. Let's verify that the contents of the repository has in fact changed
-~~~
-$ cat blacksheep.txt
-~~~
-{: .language-bash}
-and the log
-~~~
-$ git log -5 --oneline --decorate origin/master
-~~~
-{: .language-bash}
-We can see that the current commit, HEAD, has been moved back by three commits, but that master (and origin/master) are in the same place. This is useful if we want to move around and look around, without changing the branches themselves. We can go back to where we were with
-~~~
-$ git checkout master
-~~~
-{: .language-bash}
-Let's get rid of our changes, and this time make changes to blacksheep.txt
-~~~
-$ git reset --hard
-~~~
-{: .language-bash}
-And we edit the file to look like this
-~~~
-Baa, baa, black sheep, have you any wool?
-Yes, sir, yes, sir, three bags full!
-One for me and one for you
-~~~
-And we run the exact same checkout command again
-~~~
-$ git checkout -q HEAD~3
-~~~
-{: .language-bash}
-This time, git has refused to do the checkout, because the file we
-have been changing would also have been changed by the checkout. This
-is much safer than using a `git reset --hard`, as it preserves our 
-work and prevents us from losing current changes.
-
-### Checkout without `-q`
-The `-q` we've seen in the previous section stands for "quiet"; it tells git that we're not interested in hearing about any problems. This normallly *isn't* the behaviour we would like. Let's see what happens with the same checkout commands without the `-q` option.
-
-First we move back to master
-~~~
-$ git checkout master
-~~~
-{: .language-bash}
-This appears to behave exactly the same as before. Next we move back three commits, as we did previously
-~~~
-$ git checkout HEAD~3
-~~~
-{: .language-bash}
-Now we can see that we get a long warning message about a detached HEAD. This means that we're not on any branch, if we continue from where we are now, we will be creating and "alternate past", with a different set of parallel changes. Unless these we create a branch to keep these, we will lose them. Git helpfully tells us that what we probably want is to use the -b option to create a new branch that will hold this information.
-
-## Checkout of only specific files
-Both the checkout and reset commands can take files as arguments, in this case they behave quite differently. Let's reset our repository to the way it is on the remote server
+# Checkout on files
+The checkout command from earlier has an important variant when passed files as arguments. In this case they behaves very differently. Let's reset our repository to the way it is on the remote server to begin with.
 ~~~
 $ git reset --hard origin/master
 ~~~
@@ -391,12 +319,13 @@ Now, let's perform a checkout, this time specifying the `commit-number.txt` file
 $ git checkout HEAD~3 -- commit-number.txt
 ~~~
 {: .language-bash}
-We check what has happened with
+
+What happened? Previously checkout would have moved `HEAD`.
 ~~~
 $ git log --oneline origin/master
 ~~~
 {: .language-bash}
-We see that we're still on the same commit, HEAD hasn't moved this time. It doesn't make sense to move HEAD for some files and keep it in the same place for others, that would get confusing very quickly. Only the file copy operations have been performed. Let's see what effect this has had.
+In fact, we're still on the same commit, HEAD hasn't moved at all this time. It doesn't make sense to move HEAD for some files and keep it in the same place for others, that would get confusing very quickly. Only the file copy operations have been performed. Let's see what effect this has had.
 ~~~
 $ git status
 ~~~
@@ -411,7 +340,10 @@ The file `commit-number.txt` has changed and nothing else has. In this case git 
 $ git reset --hard HEAD~3 -- commit-number.txt
 ~~~
 {: .language-bash}
-This is not a valid command, since it would perform the same operation as the `git checkout` command. Using `git reset` however does allow us to copy specific files to and from the index, leaving the working directory unchanged.
+This is not a valid command, since it would perform the same operation as the `git checkout` command.
+
+# Rest with files
+Using `git reset` with files allow us to copy specific files to and from the index, leaving the working directory unchanged.
 Let's reset our repository to the way it was at the beginning of this lesson
 ~~~
 $ git reset --hard origin/master
@@ -425,34 +357,24 @@ This repository is used to demonstrate reset and checkout for git.
 and copy them to the staging area.
 ~~~
 $ git add README.txt
-~~~
-{: .language-bash}
-We can use git reset to copy the version in the repository back, effectively undoing the add. First we check the status of the file we changed
-~~~
 $ git status
 ~~~
 {: .language-bash}
-Now we can unstage the file with
+We can use git reset to copy the version in the repository back, effectively undoing the add.
+
+We can unstage the file with
 ~~~
 $ git reset HEAD -- README.txt
 ~~~
 {: .language-bash}
-If we leave out the specification of the commit, HEAD in this case, git will default to HEAD. Let's add the file again
-~~~
-$ git add README.txt
-~~~
-{: .language-bash}
-and check the status
-~~~
-$ git status
-~~~
-{: .language-bash}
-Now we reset, or unstage, the file with
-~~~
-$ git reset README.txt
-~~~
-{: .language-bash}
-Note, only the mixed (default) version of reset makes sense with files. Changing the position of the branch tip (i.e. `--soft`) doesn't make sense with files, and `--hard` is equivalent ot checkout.
+
+> ## Shorthand Reset
+> If we leave out the specification of the commit, HEAD in this case, git will default to HEAD. Let's add the file again. We could have achieved this with `git reset README.txt`
+{: .callout}
+
+> ## Just one reset
+> Note, only the mixed (default) version of reset makes sense with files. Changing only the position of the branch label (i.e. `--soft`) doesn't make sense with files. The `--hard` variant would make sense, but is equivalent to checkout with files, so doesn't exist.
+{: .callout}
 
 >## a-HEAD or not on a-HEAD
 > What happens when we use reset to move when we're in a detached HEAD state? How does it differ from when we use reset when a branch is checked out? Run the following two sets of commands - what do they do differently? What is different in output of the final log command? Why?

@@ -1,479 +1,371 @@
 ---
-title: "Commits Revisited"
+title: "Understanding Add and Commit"
 teaching: 45
 exercises: 0
 questions:
-- How do commits work?
+- How do we really create commits?
 objectives:
-- "Gentle reminder of basic git usage"
-- "Understanding of how git handles changes"
+- "Review of git add and git commit"
+- "See how git creates commits"
+- "Explore the three trees"
 keypoints:
-- "Learnt how files end up in the staging area"
-- "Learnt how the staging area is turned into a commit"
-- "Learnt how to inspect commits, blobs and trees"
+- "Git add copies files into the staging area"
+- "Git commit creates a new commit by duplicating the staging area"
+- "Git status shows a summaries of differences between the trees"
+- "Commits are not overwritten, they're stored somewhere and replaced"
 ---
 {% include links.md %}
 
-In this section we'll start by talking about things that may be familiar, such as adding and commit, and then moving into talking about branching workflows.
+In this episode, we'll discuss the basics of adding and commiting files. We will however take great care with the mental picture we create git commits. This mental picture might be different from the way in which you've thought about git in the past, but understanding it is first step to truly understanding git.
 
-# A local git workflow
-Let's create a copy of a repository that we can work on, available at
-<a href='https://github.com/sa2c/example-gitflow'>
-    https://github.com/sa2c/example-gitflow
-</a>
-We clone the repository with
+# Setup
+Assuming that you've downloaded the lesson material to the directory `~/git-demystified`, we can
+change into the directory for this episode with:
 ~~~
-$ git clone git@github.com:sa2c/example-gitflow.git ~/example-gitflow
+$ cd ~/git-demystified/episode_1
 ~~~
 {: .language-bash}
-This command will output something like
+
+In this episode, we'll discuss the basics of adding and commiting files. We will however take great care with the mental picture we create git commits. 
+We can see the files in this folder or directory with:
 ~~~
-$ git clone git@github.com:<your-github-username>/example-gitflow.git
-Cloning into 'example-gitflow'...
-remote: Enumerating objects: 3, done.
-remote: Counting objects: 100% (3/3), done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 1410 (delta 0), reused 2 (delta 0), pack-reused 1407
-Receiving objects: 100% (1410/1410), 484.97 KiB | 295.00 KiB/s, done.
-Resolving deltas: 100% (796/796), done.
+$ ls
+~~~
+{: .language-bash}
+
+We can look inside one of the files with:
+~~~
+$ cat blue.txt
+~~~
+{: .language-bash}
+
+Which will give us the output:
+~~~
+Blueberries
+Smurfs
+Cookie Monsters
 ~~~
 {: .output}
-If you see a message which says something like
+
+The `other` entry in `ls` a folder, we can look inside with:
 ~~~
-git@github.com: Permission denied (publickey).
-fatal: Could not read from remote repository.
+$ ls other
+~~~
+{: .language-bash}
+
+So far, this is just a plain directory with files. Let's initialise it with
+~~~
+$ git init .
+~~~
+{: .language-bash}
+
+# Changes as Differences
+
+Let's start by reviewing what we might think about add and commit so far.
+
+We'll start by add the file red.txt
+~~~
+$ git add red.txt
 ~~~
 {: .output}
-then there is an issue with your ssh setup. Take another look at the
-previous episode, or ask a helper to check if with you. Once you've
-cloned the respository, change into that directory with
-~~~
-$ cd ~/example-gitflow
-~~~
-{: .language-bash}
-Let's start making a few changes around here. We're working on a example repo, so to avoid confusion we're writing the in the README.mdown file
-~~~
-$ nano README.mdown
-~~~
-{: .language-bash}
-We change the first line from
-~~~
-git-flow
-~~~
-to
-~~~
-git-flow-example
-~~~
-We where also a bit clumsy along the way, and we added a file by mistake. Let's fo that now:
-~~~
-touch whoops-I-did-it-again
-~~~
-{: .language-bash}
-> ## How touching
-> If you haven't come across accross the touch command before, it creates a new empty file with the name supplied
-{: .callout}
-Since we've been very busy making changes (and we've checked with the maintainer) we'll add ourselves to the end of the list of authors in the AUTHORS file. Let's do this by typing
-~~~
-$ nano AUTHORS
-~~~
-{: .language-bash}
-and adding our name to the bottom of the author list.
 
-We've been busy making changes, let's take a look at the state of the repository.
+Finally, we'll have a look at the status of files with:
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-We'll see something like:
+
+We'll see the output
 ~~~
-$ git status
 On branch master
-Your branch is up-to-date with 'origin/master'.
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	modified:   AUTHORS
-	modified:   README.mdown
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-	whoops-I-did-it-again
-
-no changes added to commit (use "git add" and/or "git commit -a")
-
-~~~
-{: .language-bash}
-
-The status command tells us that the AUTHORS and README.mdown file have been modified, but not added to the repository. There is also one new file which is not trackes.
-
-> ## The three trees
->  It can be helpful to think of git as manipulating three sets of files, like three folders. The *working directory*, the *staging area* (or index) and the *current commit* (known as HEAD). The working directory is the folder that we see, the other two are invisible. Typing `git status` asks git to compares these three sets of files, and tell us about the differences.
-If we always think of git in this way, many operations will seem less mysterious.
-{: .callout}
-Let's add the AUTHORS file to the staging area:
-~~~
-$ git add README.mdown
-~~~
-{: .language-bash}
-We can think of this action as copying the file AUTHORS into the staging area "folder". The staging area is what we think of as the "next proposed commit".
-
-Let's look at the state of our repository, with
-~~~
-$ git status
-~~~
-{: .language-bash}
-We will see something like the following:
-~~~
-$ git status
-On branch master
-Your branch is up-to-date with 'origin/master'.
+No commits yet
 
 Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
-
-	modified:   README.mdown
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	modified:   AUTHORS
+  (use "git rm --cached <file>..." to unstage)
+	new file:   red.txt
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
+	blue.txt
+	green.txt
+	other/
+~~~
+{: .output}
 
-	whoops-I-did-it-again
-~~~
-{: .language-bash}
- 
-* The *Changes to be committed* heading lists the files which are differences between the current commit and the staging area, and also between the staging area and the current commit. In other words, the file is different in all three areas. We see the AUTHORS file here, since `git commit` is an operation that copies files from the working directory to staging area, and these files are different from the current commit (HEAD).
-
-* The *Changes not staged for commit* heading lists the files which are different between the staging area and the current commit. The README.mdown file is here, since it was changed in the working directory, but we didn't run commit to copy it to the next proposed commit (staging area).
-
-* The final heading, *Untracked files* shows files that are in the working directory, but are not in the current commit. Git doesn't know about them yet. A special case of this is before we create out first commit. In this case, all files will be untracked files.
-
-Lets make some further changes to the working directory files, by deleting the line we added to the top of the AUTHORS file.
-
-We're feeling very polite today, so let's add the word please to some of the section of README.mdown. We can open the file with nano:
-~~~
-nano README.mdown
-~~~
-{: .language-bash}
-We'll make four changes to this file.
-Firstly, we'll change the FAQ section to be:
-~~~
-FAQ
----
-Please see the [FAQ](http://github.com/nvie/gitflow/wiki/FAQ) section of the project
-Wiki.
-Thank you.
-~~~
-Note how we've added the word please to both sections, and "Thank you." to the next line.
-Thirdly, we change the "Contribution" section title to be:
-~~~
-Please consider contribution
-----------------------------
-~~~
-Just before we close the file, we realise that the URLs have all changed, so we search search and replace all instances of the string `nvie` with `sa2c`.
+When you're starting out, it's helpful to think of `git add` as adding the changes that you've made to a file to the staging area. But we're going to be looking at a more accurate and useful way of thinking about this later in this episode. For these simple actions, both these approaches are equivalent.
 
 
-Looking at the status now
+For more advanced usage however, this mental model breaks down quickly. We need to unlearn this way of thinking and learn to think of git in terms of snapshots. This will be the topic of the rest of this chapter.
+
+# The Three Trees
+
+Git is often described as manipulating _trees_ of files, you can think of them as three folders.
+
+These are:
+
+1. The `working directory` - your current git files
+2. The `staging area` - where you prepare the next commit
+3. The current commit or `HEAD` - the current commit, the one you're building on top of.
+
+The following images shows how these three trees looks currently after adding `red.txt` to the staging area.
+
+![Three Trees Working Directory](../assets/img/0-working-directory.png)
+![Three Trees Staging Area](../assets/img/1-add-red.png)
+![Three Trees HEAD](../assets/img/1-empty-commit.png)
+
+Git add has copied the file `red.txt` into the staging area. It hasn't done anything more complicated than that. This is how git stores the changes we've been making
+
+Lets look at the output of git status again:
 ~~~
 $ git status
-~~~
-{: .language-bash}
-We see the following:
-~~~
 On branch master
-Your branch is up-to-date with 'origin/master'.
+
+No commits yet
 
 Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
-
-	modified:   README.mdown
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
-
-	modified:   AUTHORS
-	modified:   README.mdown
+  (use "git rm --cached <file>..." to unstage)
+	new file:   red.txt
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
+	blue.txt
+	green.txt
+	other/
+~~~
+{: .output}
 
-	whoops-I-did-it-again
+It seems like git status is in fact a summary of the differences between `HEAD` and the staging area. Git computes this on the fly when you call git status, which is why git status can sometimes take a long time in a very large commit.
+
+Next we add the file `green.txt`:
+~~~
+$ git add green.txt
 ~~~
 {: .language-bash}
 
-Note how the README.mdown files is file both under *Changes to be committed* and under *Changes not staged for commit*. This means that there are differences between the file in the current commit and the staging area, as well as between the staging are and the working directory. In other words, each of the three trees has a different version of the file.
+Now the staging area changes, but the working directory and the last commit stay the same. Remember that git add it a copy. The staging area now looks like:
 
-We can see the differences between the working directory and the staging area with:
+![Three Trees Working Directory](../assets/img/0-working-directory.png)
+![Three Trees Staging Area](../assets/img/2-add_green.png)
+![Three Trees HEAD](../assets/img/1-empty-commit.png)
+
+Once again, if we typed git status it would summarise the differences between the staging area and the commit.
 ~~~
-$ git diff
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+	new file:   green.txt
+	new file:   red.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	blue.txt
+	other/
+~~~
+{: .output}
+
+Now lets create our first commit
+~~~
+$ git commit -m "Add lists of red and green objects"
 ~~~
 {: .language-bash}
-This shows us the changes not staged yet. Changes to a line are shown as the line being removed (prepended with a `-`) and then the new line being added again (lines prepended with a `+`).
 
-What about the changes which are already staged?
+![Three Trees Working Directory](../assets/img/0-working-directory.png)
+![Three Trees Staging Area](../assets/img/2-add_green.png)
+![Three Trees HEAD](../assets/img/3-commit_red_and_green.png)
 
-We see the differences between the staging area and the current commit with:
-~~~
-$ git diff --staged
-~~~
-{: .language-bash}
+The only thing that changes here is the current `HEAD`. Git took the staging area, the next proposed commit, and made _it_ the current comit. It did this by first storing the previous commit away somewhere. Then replacing this with a copy of the current staging area, making that the current `HEAD` commit.
 
-This will show only change which are about to be committed. Let's say that we're happy with these changes, we can commit them with:
-~~~
-$  git commit -m 'Changed title of README.mdown'
-~~~
-{: .language-bash}
-We have now created a new current commit, by copying the files as they were in the staging area. We verify this with:
-~~~
-$  git log -3
-~~~
-Note: you can exit git log by typing the <kbd>Q</kbd> key.
+> ## Keeping history
+> Note that we clearly don't overwrite the previous commit. Imagine putting the previous commit in storage somewhere, and replacing it with the contents of the staging area. We'll discuss how this storage works later.
+{: .callout}
 
-After a commit, the files in the staging area and the current commit are always going to be the be same. We'll verify this with:
+Let's take another look at git status
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-We see the same differences between the working directory and staging areas as before, but no differences between staging area and the current commit. This makes sense, since one was just copied the contents of the staging area into a new commit, which has become the current commit.
-
-The problem with this is that we've made two unrelated set of changes, what if we want to create this in two commits? One for the URL changes and one for the politeness changes. Let's add the file, but this time we do it with
 ~~~
-$ git add -p README.mdown
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	blue.txt
+	other/
+~~~
+{: .output}
+
+Git reports on the untracked files, which are the files which have never been added to the `staging area`. There are no other differences to report.
+
+Note how the commit contains a *complete snapshot of all files*, as if you had copied them there by hand.
+
+Also, note how the staging area contains the previous files, not just the changes we've made in this commit.
+
+## Crafting commits
+
+Let's make some changes in the working directory, by editing the files. First we'll edit `red.txt`, changing `Apples` to `Red Apples` and changing `Roses,` to `Roses` (removing the comma). We'll do this with:
+~~~
+$ nano red.txt
 ~~~
 {: .language-bash}
-This looks confusing. Let's hit the <kbd>?</kbd> key to review out options. We choose changes to keep with <kbd>y</kbd> and reject all other changes with <kbd>n</kbd>. Let's do this and add all the URL changes for our first commit.
 
-For some commits (e.g. FAQ), we may need to split the commit with <kbd>s</kbd>, and edit it with <kbs>e</kbd>.
+Then we'll edit `green.txt` changing `Grapes` to `Green Grapes`:
+~~~
+$ nano green.txt
+~~~
+{: .language-bash}
 
- Now that we have crafted a proposed commit, let's see what git status says.
+
+The working directory now looks like, we've highlighted out changes in green:
+
+![Three Trees Working Directory](../assets/img/5-edit_original.png)
+
+We've made all these changes at once, but let's turn this into distinct commits:
+1. One commit that adds the lines which correct typographical erros
+2. One commit that adds the file `blue.txt`, and updates colours
+
+Normally, we would avoid adding two distinct changes to the same commit. But we'll come back and fix this later.
+
+To add the typographical error, we need to add only part of a file. We can do this with
+~~~
+$ git add -p red.txt
+~~~
+{: .language-bash}
+
+We select `s` to split the hunk that git presents us with, `y` to accept the first change, and `n` to reject the second.
+
+Next we add `blue.txt` and the changes from `green.txt`
+~~~
+$ git add blue.txt green.txt
+~~~
+{: .language-bash}
+
+Finally, we check that status:
 ~~~
 $ git status
 ~~~
 {: .language-bash}
-We see that we have three versions of README.mdown, in the working directory, the staging area and the current commit.
 
-In the working directory it has all of our changes, in the staging area it has the changes we selected with `git add -p`, and in the current commit it is the same as it was previously (for now).
-> ## Manipulating files, not changes
-> Git hasn't chosen parts of the file or checked changes into the staging area. It just created for us a version of the file with only some of the changes, the file in the staging area. This file probably never existed with that exact same contents in the working directory.
-{: .callout}
-Let's see how the files in the staging look compared to the latest commit.
 ~~~
-$ git diff --staged
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   blue.txt
+	modified:   green.txt
+	modified:   red.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   red.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	other/
 ~~~
-{: .language-bash}
-These are the differences which will be commited. They should be URL changes only. Note the content of the FAQ section in particular. And how does the working directory looks compared to the staging area?
+{: .output}
+
+Note how `red.txt` appears in both sections.
+
+We can see explicitly what is still not staged with:
 ~~~
 $ git diff
 ~~~
 {: .language-bash}
-These are changes which haven't been added yet, they'll go into future commits.  We're happy now, so we can commit:
-~~~
-$ git commit -m 'Changes to URLs'
-~~~
-{: .language-bash}
-Let's take a look at the files which differ now
-~~~
-$ git status
-~~~
-{: .language-bash}
-and, we'll check that the changes are the ones we expect
-~~~
-$ git diff
-~~~
-{: .language-bash}
-Once we're happy that this can all go into one commit, we can add the whole file with
-~~~
-$ git add README.mdown
-~~~
-{: .language-bash}
-and
-~~~
-$ git commit -m 'More politeness in README.mdown'
-~~~
-{: .language-bash}
-Let's have a look at our history as it is currently with
-~~~
-$ git log
-~~~
-{: .language-bash}
 
-## Git internals
-Git seems to do a lot for us, and it can seem to work in mysterious ways. The aim of this short section is to give some insight into the magic that git does for us.
-
-What is a commit, and how does it all work? Git is based on the idea of creating unique (or almost unique) 40 character "fingerprints" for everything (or almost everything) that it knows about. You've probably seen these everywhere. Git has three types of object referenced by these IDs: commits, trees and blobs. We'll explore these one at a time, you'll often see these mentioned in the documentation, and this can be intimidating.
-
-### Content-addressable storage
-
-Content addressable storage is a way to store information that is indexed by its content. If we know its content, we know its location. If the content changes, the location changes. If the content is the same, the location is by default the same. The "Pro Git" book, mentions:
-"Git is fundamentally a content-addressable file system with a version control system user interface written on top of it."
-
-We can see the list of content that git knows about, known as `objects` in git speak in the `.git/objects` directory, let's try this:
+By default, this shows the differences between the working directory and the staging area.
+We can see an explicit diff between `HEAD` and `staging area` with
 ~~~
-$ ls .git/objects
-~~~
-{: .language-bash}
-We can't look directly inside these objects, because they're compressed with the zlib library, but they are just text files. Git provides a `cat-file` command to decompress these objects. 
-
-Many of the git commands you may be familiar with can be thought of as scripts that manipulate these objects.
-
-### Commit Objects
-There are three types of object that git manipulates as content-addressable.
-
-The first we'll look at we're already familar with, the commit, but what are commits really? Commits are a type of git `object`, stored in this content-addressable system. It's a file is a file in the `.git/objects` directory. We can't read it directly because there is some compression applied, but git allows us to extract the contents of git file with the `cat-file` command.
-~~~
-$ git cat-file -p 15aab
-~~~
-{: .language-bash}
-Finally we can see understand what a commit actually contains.
-~~~
-tree d570b2c26081ff4794e72fa3dd2cc38062df9910
-parent 5bca8d9358f5b08af40ac32f289bb14b18965cec
-author Jerome Baum <jerome@jeromebaum.com> 1348580812 +0200
-committer Jerome Baum <jerome@jeromebaum.com> 1348580812 +0200
-
-Use git_do where appropriate
+diff --git a/red.txt b/red.txt
+index 90498cb..c6b61f8 100644
+--- a/red.txt
++++ b/red.txt
+@@ -1,3 +1,3 @@
+ Red Apples
+ Strawberries
+-Roses,
++Roses
 ~~~
 {: .output}
-This is *everything* that git knows about a commit. It also contains some other metadata, and a tree, which looks like another tree. If any of this information changes (including this tree ID), the commit ID (or fingerprint) will also change. All of this should to be exactly identical for an identical commit ID. If we change any of these things, we will by definition have a commit with a different ID. Note that the commit ID isn't included here, can you work out why?
 
-Importantly, a commit only knows about its parents, not its children. This makes sense. We don't know the children of a commit when we create it, and if we add this information later, it would changing the commit ID or fingerprint.
-
-If the content of a file or its name changes, then the tree object will change. This results in a different commit fingerprint, since the tree is part of the data in the commit.
-
-### Tree Objects
-What is this tree object? Since we know its ID, we can look up the contents with `cat-file`, just as we did for the commit. The tree is just another thing that git knows about, collectively known as `objects`.
-
+In this case, it would be more useful to see what it about to make it into the next commit. We do this with
 ~~~
-$ git cat-file -p d570
+$ git diff --cached
 ~~~
 {: .language-bash}
-We see the information in a tree object
+
 ~~~
-100644 blob 8d038485fc10058d4e078954e17eb262f8263cfe    .gitignore
-100644 blob 85665678e4acc7a6961bc989073a217e8f0e815b    .gitmodules
-100644 blob aded955fca44f9199b340667048f7a4f7504e4e6    AUTHORS
-100644 blob 2281f2307d8123fc13f157953b3c69dd935aaaee    Changes.mdown
-100644 blob cedd1823140299f7862bf84afa0f217e2b1ac9e7    LICENSE
-100644 blob fbbfd2c00016b174c351addde78985f7064ddb3d    Makefile
-100644 blob a01079b4baae9ea3af2c9e05ead57f2667f0460c    README.mdown
-100755 blob f7494c9b82d892323d951156d863c39f8b7cd47d    bump-version
-040000 tree b5369782e23c81adbcabbf388504690d9217d7ba    contrib
-100755 blob fd16d5168d671b8f9a8a8a6a140d3f7b5dacdccd    git-flow
-100644 blob 55198ad82cbfe7249951aa75f1373a476997d33a    git-flow-feature
-100644 blob ba485f6fe4b7d9c35bc01d2a6bd4ae201bccc9bd    git-flow-hotfix
-100644 blob 5b4e7e807423279d5983c28b16307e40dfdb51d7    git-flow-init
-100644 blob cb95bd486deb7089939362705d78b2197893f578    git-flow-release
-100644 blob cdbfc717c0f1eb9e653a4d10d7c4df261ed40eab    git-flow-support
-100644 blob 8c314996c0ac31f1396c48af5c6511124002dab7    git-flow-version
-100644 blob 33274053347f4eec2f27dd8bceca967b89ae02d5    gitflow-common
-120000 blob 7b736c183c7f6400b20ea613183d74a55ead78b5    gitflow-shFlags
-160000 commit 2fb06af13de884e9680f14a00c82e52a67c867f1  shFlags
+diff --git a/blue.txt b/blue.txt
+new file mode 100644
+index 0000000..d783f04
+--- /dev/null
++++ b/blue.txt
+@@ -0,0 +1,3 @@
++Blueberries
++Smurfs
++Cookie Monsters
+diff --git a/green.txt b/green.txt
+index 33f7e97..158c5d5 100644
+--- a/green.txt
++++ b/green.txt
+@@ -1,3 +1,3 @@
+-Grapes
++Green Grapes
+ Cucumbers
+ Avocados
+diff --git a/red.txt b/red.txt
+index 8224889..90498cb 100644
+--- a/red.txt
++++ b/red.txt
+@@ -1,3 +1,3 @@
+-Apples
++Red Apples
+ Strawberries
+ Roses,
 ~~~
 {: .output}
-Note how each entry has an ID that's very similar to the ones we've seen before. A tree is a list of file names and an ID, that tells us where we can find the content. The tree object can contain other trees (for example the *contrib* directory), this is how git handles directory trees. Others are files, such as the AUTHORS file. Note that the tree knows only the ID, but knows nothing about the content.
 
-### Blob Objects
-Blobs are just the word git uses for the content of a file without its name. If two files contained the exact same content, they would both point to the same blob with a different filename. Let's take a look at a blob, the `AUTHORS` file above for example:
+The `git diff --cached` command shows, if we did commit now, how would the resulting commit be different to the current commit.
 
+Let's take a look at how our three trees look at this stage:
+
+![Three Trees Working Directory](../assets/img/5-edit_original.png)
+![Three Trees Staging Area](../assets/img/7-stage_colors_green.png)
+![Three Trees HEAD](../assets/img/3-commit_red_and_green.png)
+
+
+Note how `git -p` has created a file in the staging area, from the instructions we've given it, in a state in which the file has never existed in the working directory.
+
+We'll now commit this
 ~~~
-$ git cat-file -p aded
+$ git commit -m "Added colour specification and blue.txt"
 ~~~
 {: .language-bash}
-This is *everything* that git knows about this blob, it doesn't know the file name only the content.
-~~~
-Authors are (ordered by first commit date):
 
-- Vincent Driessen
-- Benedikt Böhm
-- Daniel Truemper
-- Jason L. Shiffer
-- Randy Merrill
-- Rick Osborne
-- Mark Derricutt
-- Nowell Strite
-- Felipe Talavera
-- Guillaume-Jean Herbiet
-- Joseph A. Levin
-- Jannis Leidel
-- Konstantin Tjuterev
-- Kiall Mac Innes
-- Jon Bernard
-- Olivier Mengué
-- Emre Berge Ergenekon
-- Eric Holmes
-- Vedang Manerikar
-- Myke Hines
-
-Portions derived from other open source works are clearly marked.
-~~~
-{: .output}
-This is the content of the file AUTHORS, but just the content. Notice, there is not reference to a filename. It's just a nameless blob of information. The ID of the blob is the name git uses for it, and that is derived from this content. Like a fingerprint. We'll see how this is a very powerful idea. Note that this means that two files with the same content, by definition reference the same blob. Note also that a blob is a specific version of the file content. A different versiono f the same file will have a different blob.
-
->## Turtles all the way down
-Note that if the content of a blob changes (e.g. by changing the content) then the ID changes, and consequentially the tree and commit IDs will change. Note, since a commit references the parent, *all child commits* will also change. Likewise if a tree changes (by renaming or moving files or directories), then the commit and all of its parent commits will change. It has been noted that git is a content-addressable filesystem, with a version control system build on top of it.
-{: .callout}
-
->## Well...not quite
-Not all things git knows about are objects. Branches, the HEAD pointer, the staging area (or index) and tags are information that git holds which are not objects.
-{: .callout}
-
->## Commit-ish and Tree-ish
-> In documentation you might see many references to things that are commit-ish or tree-ish. Git has a powerful translation mechansim, that can convert any number of differnt ways of referring to a commit into a commit object or tree obeject (if it needs them). We say these different ways of references commits or trees are commit-ish or tree-ish. Examples of this that we'll see today would be:
->~~~ 
->$ git checkout master
->~~~
->{: .language-bash}
->or
->~~~
->$ git checkout HEAD
->~~~
->{: .language-bash}
->most of the time, git is simply looking up the commit that master or HEAD currently point to, and performing the operation on that commit.
-{: .callout}
-
-So, anything you do to change a commit in any way will result in a new commit with a different ID, even if all the contents is the same but only author is different.
-
-Let's look at our previous commit history:
+Let's take a look at our log
 ~~~
 $ git log --oneline
 ~~~
 {: .language-bash}
-Note here that for commits 15aab and below, we all have the same commit ID. It's the same object exactly. But the commits above, even if you copied what I did exactly, are different because they have a different author and possibly a different time, and if contents of the files, and therefore the blobs and trees, are identical.
 
->## Branches
->Each commit is some metadata about the author, a pointer to files/contents, a commit message and a pointer to the previous commit. This creates a chain of commits extending back in time. We could imagine how we could follow this chain back to the start if we know the last commit. This is exactly what a branch is, a pointer to the latest commit.
-{: .callout}
+Note how git gives us an identifier for each commit, and that the identifiers on your machine are different to mine.
 
->## Patching
->First, make as many changes as you like to README.mdown, in different parts of the file. From these changes use `git add -p` to create three or four difference commits that each contain only some of the changes. You can practice:
->* choosing sections to add/remove to a commit with <kbd>y</kbd> and <kbd>n</kbd>
->* splitting up changes grouped together using <kbd>s</kbd>
->* splitting up changes on the same line into different commits using <kbd>e</kbd>
-{: .challenge}
+# Everything else
 
->## Finding trees
->First, consider would you expect the top level directory tree of this commit and the last commit to be the same or different?
->Verify your guess using `git log` and `cat -p <thing-id>`
->>## Solution
->>* use `git log` to find the ID of the current and last commits (the 40-character string in git log).
->>* write down the first six characters of both, let's say (for example) they are `a12345` and `b56789`.
->>* `git cat-file -p a12345` will then show you the commit content. This will contain the tree ID
->>* `git cat-file -p b56789` will then show you the commit content of the second commit. 
->>* Compare the ID shown for tree in both.
->{: .solution}
-{: .challenge}
+Finally, we'll commit everything that is left with
+~~~
+$ git add red.txt other/
+$ git commit -m "Changes"
+~~~
+{: .output}
 
->## Finding blobs
->Use `git cat-file -p` to see the content of both trees from the last excercise. What can you tell about which files have changed and which have not from the tree? Did this match your expectation? Does the blob ID change for files which have the same content?
->>## Solution
->>Files with the same content should have the same blob ID in the tree. Files with different content will have different blob IDs.
->{: .solution}
-{: .challenge}
+This will copy all the files from out working directory into the staging area, then create a new commit which will also be identical to the working area. After doing this, all three areas will be the same.
+
+We can verify this with
+~~~
+$ git status
+~~~
+{: .language-bash}
