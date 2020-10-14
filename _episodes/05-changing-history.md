@@ -342,7 +342,7 @@ $ git reset --hard HEAD~3 -- commit-number.txt
 {: .language-bash}
 This is not a valid command, since it would perform the same operation as the `git checkout` command.
 
-# Rest with files
+# Reset with files
 Using `git reset` with files allow us to copy specific files to and from the index, leaving the working directory unchanged.
 Let's reset our repository to the way it was at the beginning of this lesson
 ~~~

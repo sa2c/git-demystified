@@ -114,7 +114,7 @@ The following images shows how these three trees looks currently after adding `r
 ![Three Trees Staging Area](../assets/img/1-add-red.png)
 ![Three Trees HEAD](../assets/img/1-empty-commit.png)
 
-Git add has copied the file `red.txt` into the staging area. It hasn't done anything more complicated than that. This is how git stores the changes we've been making
+Git add has copied the file `red.txt` into the staging area. It hasn't done anything more complicated than that. This is how git stores the changes we've made.
 
 Lets look at the output of git status again:
 ~~~
@@ -369,3 +369,10 @@ We can verify this with
 $ git status
 ~~~
 {: .language-bash}
+
+>## Patching
+>Make as many changes as you like to any files you like, making sure to make multiple changes to the same file. Use `git add -p` to create multiple commits that each contain only some of the changes. You can practice:
+>* choosing sections to add/remove to a commit with <kbd>y</kbd> and <kbd>n</kbd>
+>* splitting up changes grouped together using <kbd>s</kbd>
+>* splitting up changes on the same line into different commits using <kbd>e</kbd>
+{: .challenge}

@@ -211,67 +211,58 @@ $ git log --oneline -10
 {: .callout}
 
 ## Pull with rebase
-One of the most useful uses of rebase is if we have changes on our local version of master, and we would rather have a linear history rather than merges. In this case, when we pull, we can do a pull with a rebase. Let's see this in action. We'll checkout master
+One of the most useful uses of rebase is if we have changes on our local version of master, and we would rather have a linear history rather than merges. In this case, when we pull, we can do a pull with a rebase. Let's take a look at this
+### Pull with merge
 ~~~
-$ git checkout master
-~~~
-{: .language-bash}
-And reset it back to the way it is was one commit before `origin/master`
-~~~
-$ git reset --hard origin/master~
+$ cd ~/git-demystified/episode_7.3
 ~~~
 {: .language-bash}
-Let's make some changes and pull and see what happens. We add a new file
+First, we'll do this as a merge
 ~~~
-$ cat test.txt
-~~~
-{: .language-bash}
-add the file and commit
-~~~
-$ add test.txt
-$ git commit -m 'test commit'
+$ git fetch --all
 ~~~
 {: .language-bash}
-Let's look at our commits
-~~~
-$ git log --oneline --graph -10 origin/master master
-~~~
-{: .language-bash}
-OK, so `master` and `origin/master` have diverged with one new commit
-each. What happens if we pull now?
+Then we'll do a normal git pull
 ~~~
 $ git pull
 ~~~
 {: .language-bash}
-Let's look at our commits
+
+And take a look
 ~~~
-$ git log --oneline --graph -10 origin/master master
+$ git log --oneline --all --graph
 ~~~
 {: .language-bash}
+
 We see that git has create a merge commit for us, merging the remote
 and local versions of `master`. But, for a single commit, wouldn't it
 be nicer if the commit just appeared after all the work that has been
 done on `master`? Let's reset our repository before merge and try
 again. We'll use the reflog to do that with
+
+### Pull with rebase
+
 ~~~
-$ git reset --hard <commit-id>
-~~~
-{: .language-bash}
-Let's check we've got the repository back to before the merge.
-~~~
-$ git log --oneline --graph -10 origin/master master
+$ cd ~/git-demystified/episode_7.3
 ~~~
 {: .language-bash}
-So we could pull again, but how do we avoid those merge commits. The answer is a pull with rebase.
+First, we'll do this as a merge
 ~~~
-$ git pull --rebase
-~~~
-{: .language-bash}
-Let's look at our history now
-~~~
-$ git log --oneline --graph -10 --all
+$ git fetch --all
 ~~~
 {: .language-bash}
+Then we'll do a normal git pull
+~~~
+$ git pull
+~~~
+{: .language-bash}
+
+And take a look
+~~~
+$ git log --oneline --all --graph
+~~~
+{: .language-bash}
+
 Rather than a merge commit, git has replayed our local changes on top of the current state of master, it looks as if all the changes happened in a linear history.
 
 > ## It's safe to `pull --rebase`
