@@ -68,10 +68,10 @@ orig = [{ 'filename': "red.txt",
           'line_colors': [None, None, None],
           'visible': True,
            'source': "root" },
-         { 'filename': "terracotta.txt",
+         { 'filename': "orange.txt",
            'type': "file",
           'label_color': "brown",
-          'lines': ["Jars", "Earthenware", "Sculptures"],
+          'lines': ["Oranges", "Pumpkins", "Goldfish"],
           'line_colors': [None, None, None],
           'visible': True,
            'source': "other" },
@@ -99,7 +99,7 @@ lines = graph("Staging Area (Index)", add_red)
 graphviz.Source(lines, format="png").view(filename="../assets/img/1-add-red")
 
 # Create an empty commit
-lines = graph("HEAD (Empty)", hidden)
+lines = graph("HEAD (Not set yet)", hidden)
 graphviz.Source(lines, format="png").view(filename="../assets/img/1-empty-commit")
 
 ## add red.txt + green.txt
