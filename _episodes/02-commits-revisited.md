@@ -110,9 +110,7 @@ These are:
 
 The following images shows how these three trees looks currently after adding `red.txt` to the staging area.
 
-![Three Trees Working Directory](../assets/img/0-working-directory.png)
-![Three Trees Staging Area](../assets/img/1-add-red.png)
-![Three Trees HEAD](../assets/img/1-empty-commit.png)
+![Three Trees](../assets/img/trees1.png)
 
 Git add has copied the file `red.txt` into the staging area. It hasn't done anything more complicated than that. This is how git stores the changes we've made.
 
@@ -145,9 +143,8 @@ $ git add green.txt
 
 Now the staging area changes, but the working directory and the last commit stay the same. Remember that git add it a copy. The staging area now looks like:
 
-![Three Trees Working Directory](../assets/img/0-working-directory.png)
-![Three Trees Staging Area](../assets/img/2-add_green.png)
-![Three Trees HEAD](../assets/img/1-empty-commit.png)
+![Three Trees](../assets/img/trees2.png)
+
 
 Once again, if we typed git status it would summarise the differences between the staging area and the commit.
 ~~~
@@ -174,9 +171,7 @@ $ git commit -m "Add lists of red and green objects"
 ~~~
 {: .language-bash}
 
-![Three Trees Working Directory](../assets/img/0-working-directory.png)
-![Three Trees Staging Area](../assets/img/2-add_green.png)
-![Three Trees HEAD](../assets/img/3-commit_red_and_green.png)
+![Three Trees](../assets/img/trees3.png)
 
 The only thing that changes here is the current `HEAD`. Git took the staging area, the next proposed commit, and made _it_ the current comit. It did this by first storing the previous commit away somewhere. Then replacing this with a copy of the current staging area, making that the current `HEAD` commit.
 
@@ -221,7 +216,7 @@ $ nano green.txt
 
 The working directory now looks like, we've highlighted out changes in green:
 
-![Three Trees Working Directory](../assets/img/5-edit_original.png)
+![Three Trees](../assets/img/trees4.png)
 
 We've made all these changes at once, but let's turn this into distinct commits:
 1. One commit that adds the lines which correct typographical erros
@@ -332,10 +327,7 @@ The `git diff --cached` command shows, if we did commit now, how would the resul
 
 Let's take a look at how our three trees look at this stage:
 
-![Three Trees Working Directory](../assets/img/5-edit_original.png)
-![Three Trees Staging Area](../assets/img/7-stage_colors_green.png)
-![Three Trees HEAD](../assets/img/3-commit_red_and_green.png)
-
+![Three Trees](../assets/img/trees5.png)
 
 Note how `git -p` has created a file in the staging area, from the instructions we've given it, in a state in which the file has never existed in the working directory.
 
