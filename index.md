@@ -10,7 +10,10 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 
 > ## Prerequisites
 >
-> The *Version Control with Git* course (Software Carpentry), or a month or more experience of using git for version control.
+> [Software Carpentry][swc]'s [Version Control with Git][git-novice] course, or a month or more experience of using git for version control.
 {: .prereq}
+
+[git-novice]: https://swcarpentry.github.io/git-novice
+[swc]: https://software-carpentry.org
 
 {% include links.md %}
